@@ -3,7 +3,7 @@ layout: page
 title: "ICD-11 Postcoordination Conformance Suite"
 ---
 
-This site documents a portable conformance test suite for **ICD-11 postcoordinated cluster expressions** evaluated against FHIR terminology servers via `CodeSystem/$validate-code`. The suite is designed to run side-by-side against two backends — typically a candidate Ontoserver build and the WHO ICD-API FHIR endpoint — and diff per-case agreement.
+This site documents a portable conformance test suite for **ICD-11 postcoordinated cluster expressions** evaluated against FHIR terminology servers via `CodeSystem/$validate-code`. The suite runs side-by-side against two backends — your candidate server and the WHO ICD-API FHIR endpoint — and diffs per-case agreement. No coupling to any specific terminology server implementation.
 
 ## Purpose
 
@@ -29,7 +29,7 @@ Dated runs are kept under `results/icd-api-YYYY-MM-DD.html` so trends are visibl
 
 ## How to read a report
 
-Each case carries an `expected` (the suite's belief, grounded in the refguide), and per-backend `onto` / `icdapi` actuals. The `agree` flag is `onto === icdapi`. A row where both backends agree but disagree with `expected` is interesting — it means either the suite belief is wrong or both backends share the same gap. See [Conformance Report Explained](conformance-report-explained.html).
+Each case carries an `expected` (the suite's belief, grounded in the refguide), and per-backend `candidate` / `icdapi` actuals. The `agree` flag is `candidate === icdapi`. A row where both backends agree but disagree with `expected` is interesting — it means either the suite belief is wrong or both backends share the same gap. See [Conformance Report Explained](conformance-report-explained.html).
 
 ## How to run against your server
 
@@ -42,12 +42,12 @@ cd icd11-postcoord-conformance
 # Newman-based comparison (need newman + jq).
 brew install newman jq                # or: npm i -g newman
 
-# Point at your candidate server (Ontoserver build) and a WHO ICD-API endpoint.
-./run.sh --onto http://localhost:8080/fhir \
-         --icdapi http://localhost:9000/fhir
+# Point at your candidate server and a WHO ICD-API endpoint.
+./run.sh --candidate http://localhost:8080/fhir \
+         --icdapi    http://localhost:9000/fhir
 ```
 
-Outputs land in `comparison.json` (machine-readable) and a summary table on stdout. See the [repo README](https://github.com/aehrc/icd11-postcoord-conformance#quick-start) for Postman desktop instructions and the one-time Ontoserver fixtures upload.
+Outputs land in `comparison.json` (machine-readable) and a summary table on stdout. See the [repo README](https://github.com/aehrc/icd11-postcoord-conformance#quick-start) for Postman desktop instructions and the one-time CodeSystem fixture upload (via standard FHIR REST — works with any terminology server).
 
 ## Caveats
 

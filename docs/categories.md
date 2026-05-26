@@ -64,7 +64,7 @@ The extension code exists, but is not in the stem's permitted axis ValueSet. A l
 
 ### I — Type-2 universal extensions
 
-The `XY` series of diagnosis-code descriptors should apply to any stem regardless of declared axes. As of 2026-05-26 neither Ontoserver's experimental ICD-11 plugin nor the WHO ICD-API FHIR container surfaces a Type-2 marker — see refguide §2.10.3 for the open detection question.
+The `XY` series of diagnosis-code descriptors should apply to any stem regardless of declared axes. As of 2026-05-26 the WHO ICD-API FHIR endpoint doesn't surface a Type-2 universal-extension marker in its CodeSystem projection, and we're not aware of any other terminology server that does either — see refguide §2.10.3 for the open detection question.
 
 ### J — Required-axis missing -> abstract
 

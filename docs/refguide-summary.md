@@ -6,11 +6,11 @@ permalink: /refguide-summary/
 
 # WHO ICD-11 Reference Guide — local summary
 
-A paraphrased summary of the WHO ICD-11 Reference Guide sections that govern the postcoordination behaviour Ontoserver's ICD-11 plugin implements. Scope is **only** the rules the plugin / spec / suite depend on; this is not a substitute for the full refguide.
+A paraphrased summary of the WHO ICD-11 Reference Guide sections that govern postcoordination cluster handling. Scope is **only** the rules the conformance suite depends on; this is not a substitute for the full refguide.
 
-**Source:** *Reference Guide for the Use of the International Classification of Diseases for Mortality and Morbidity Statistics, Eleventh Revision (ICD-11)*, WHO, edition aligned with `release/11/2026-01`. Online at `https://icdcdn.who.int/icd11referenceguide/en/html/index.html`. Section numbers here track WHO's numbering as of that edition. **Do not paste verbatim WHO prose into this file** — paraphrase, cite the section, and link to plugin / spec / suite touchpoints.
+**Source:** *Reference Guide for the Use of the International Classification of Diseases for Mortality and Morbidity Statistics, Eleventh Revision (ICD-11)*, WHO, edition aligned with `release/11/2026-01`. Online at `https://icdcdn.who.int/icd11referenceguide/en/html/index.html`. Section numbers here track WHO's numbering as of that edition. **Do not paste verbatim WHO prose into this file** — paraphrase, cite the section, and link to suite touchpoints.
 
-For each rule below: a one-paragraph paraphrase, a syntactic shape, and the Ontoserver touchpoints that ground in it.
+For each rule below: a one-paragraph paraphrase, a syntactic shape, and the suite categories that exercise it.
 
 ---
 
@@ -18,11 +18,7 @@ For each rule below: a one-paragraph paraphrase, a syntactic shape, and the Onto
 
 A **precoordinated** code carries its full clinical meaning in a single stem (e.g. `BA41.0` — *Acute ST elevation myocardial infarction*). A **postcoordinated** code refines a stem by combining it with one or more **extension codes** along defined axes (laterality, severity, anatomy, time-in-life, etc.). Extension codes are X-prefixed by convention (`X` followed by digits / letters) and never appear in the first position of a cluster — they always follow a stem.
 
-| Touchpoint | Where |
-|---|---|
-| Plugin recognises extensions by X-prefix | `ClusterParser.EXT_PREFIX = 'X'`, throws `STEM_STARTS_WITH_X` / `EXTENSION_DOES_NOT_START_WITH_X` |
-| Suite cases | E.1-E.12 (parser rejections including "extension in first position"), and the implicit contract everywhere extensions appear |
-| Spec | "Cluster syntax recognition" requirement, scenario *Extension in first position is rejected* |
+| Suite categories | E.1-E.12 (parser rejections including "extension in first position"), and the implicit contract everywhere extensions appear |
 
 ---
 

@@ -1,34 +1,45 @@
 #!/usr/bin/env bash
-# Run the postcoordination suite against both backends and produce a side-by-side diff.
+# Run the postcoordination suite against two FHIR terminology server backends
+# and produce a side-by-side diff.
 #
-# Usage:
-#   ./run.sh [--onto URL] [--icdapi URL] [-h|--help]
+# Backends:
+#   --candidate URL   The server under test — any FHIR terminology server that
+#                     implements CodeSystem/$validate-code and has the ICD-11
+#                     CodeSystems loaded. Typically your candidate / development
+#                     deployment.
+#   --icdapi URL      The reference baseline — the WHO ICD-API container's FHIR
+#                     endpoint. Use this when you want to compare your server
+#                     against the canonical WHO implementation.
 #
 # Both flags take a FHIR base URL (the part before /CodeSystem/$validate-code).
 # Falls back to the baseUrl in the matching postman environment file if not given.
 #
+# Usage:
+#   ./run.sh [--candidate URL] [--icdapi URL] [-h|--help]
+#
 # Examples:
-#   ./run.sh --onto http://localhost:8080/fhir --icdapi http://localhost:9000/fhir
-#   ./run.sh --icdapi http://localhost:9000/fhir          # onto from env file
+#   ./run.sh --candidate http://localhost:8080/fhir \
+#            --icdapi    http://localhost:9000/fhir
+#   ./run.sh --icdapi    http://localhost:9000/fhir   # candidate from env file
 #
 # Requires: newman (npm i -g newman or brew install newman), jq.
 
 set -euo pipefail
 cd "$(dirname "$0")"
 
-ONTO=""
+CANDIDATE=""
 ICDAPI=""
 
 usage () {
-    sed -n '2,14p' "$0" | sed 's/^# \{0,1\}//'
+    sed -n '2,22p' "$0" | sed 's/^# \{0,1\}//'
     exit "${1:-0}"
 }
 
 while [[ $# -gt 0 ]]; do
     case "$1" in
-        --onto)   ONTO="$2";   shift 2 ;;
-        --icdapi) ICDAPI="$2"; shift 2 ;;
-        -h|--help) usage 0 ;;
+        --candidate) CANDIDATE="$2"; shift 2 ;;
+        --icdapi)    ICDAPI="$2";    shift 2 ;;
+        -h|--help)   usage 0 ;;
         *) echo "unknown arg: $1" >&2; usage 1 ;;
     esac
 done
@@ -48,8 +59,8 @@ run_backend () {
     newman "${args[@]}" || true   # don't abort on test failures; we want both runs
 }
 
-run_backend "Ontoserver" onto.postman_environment.json    "$ONTO"   onto-results.json
-run_backend "ICD-API"    icdapi.postman_environment.json  "$ICDAPI" icdapi-results.json
+run_backend "Candidate" candidate.postman_environment.json "$CANDIDATE" candidate-results.json
+run_backend "ICD-API"   icdapi.postman_environment.json    "$ICDAPI"    icdapi-results.json
 
 # Newman's JSON export does NOT include console.log output, but it does include each
 # test's `assertions[].assertion` string. Our test script formats that as:
@@ -68,8 +79,8 @@ extract_cases () {
         ]' "$file"
 }
 
-extract_cases onto-results.json   > onto-cases.json
-extract_cases icdapi-results.json > icdapi-cases.json
+extract_cases candidate-results.json > candidate-cases.json
+extract_cases icdapi-results.json    > icdapi-cases.json
 
 # Join CSV metadata + per-backend results into comparison.json. Python handles CSV
 # quoting properly (jq's `scan` regex mis-aligned columns when rationales contained
@@ -82,20 +93,20 @@ with open("postcoord-suite.csv") as f:
     for row in csv.DictReader(f):
         meta[row["id"]] = row
 def by_id(p): return {r["id"]: r for r in json.load(open(p))}
-onto = by_id("onto-cases.json")
-icdapi = by_id("icdapi-cases.json")
+candidate = by_id("candidate-cases.json")
+icdapi    = by_id("icdapi-cases.json")
 out = []
 for cid, m in meta.items():
-    o = onto.get(cid, {})
+    c = candidate.get(cid, {})
     i = icdapi.get(cid, {})
     out.append({
         "id":         cid,
         "category":   m["category"],
         "expression": m["expression"],
         "expected":   m["expectedValid"] == "true",
-        "onto":       o.get("actual"),
+        "candidate":  c.get("actual"),
         "icdapi":     i.get("actual"),
-        "agree":      o.get("actual") == i.get("actual"),
+        "agree":      c.get("actual") == i.get("actual"),
         "refguide":   m["refguide"],
         "rationale":  m["rationale"],
     })
@@ -105,12 +116,12 @@ PY
 echo
 echo "== Comparison summary =="
 {
-    printf 'id\tcategory\texpected\tonto\ticdapi\tagree\texpression\n'
+    printf 'id\tcategory\texpected\tcandidate\ticdapi\tagree\texpression\n'
     jq -r '
         def show: if . == null then "-" else tostring end;
         .[] | [
             .id, .category,
-            (.expected | show), (.onto | show), (.icdapi | show), (.agree | show),
+            (.expected | show), (.candidate | show), (.icdapi | show), (.agree | show),
             .expression
         ] | @tsv' comparison.json
 } | column -t -s $'\t'
@@ -118,9 +129,9 @@ echo "== Comparison summary =="
 echo
 total=$(jq 'length' comparison.json)
 agreement=$(jq '[.[] | select(.agree == true)] | length' comparison.json)
-onto_match=$(jq '[.[] | select(.onto == .expected)] | length' comparison.json)
+candidate_match=$(jq '[.[] | select(.candidate == .expected)] | length' comparison.json)
 icdapi_match=$(jq '[.[] | select(.icdapi == .expected)] | length' comparison.json)
-printf 'Onto-vs-ICDAPI agreement: %s / %s\n' "$agreement"  "$total"
-printf 'Onto matches suite:        %s / %s\n' "$onto_match" "$total"
-printf 'ICD-API matches suite:     %s / %s\n' "$icdapi_match" "$total"
+printf 'Candidate-vs-ICDAPI agreement: %s / %s\n' "$agreement"        "$total"
+printf 'Candidate matches suite:       %s / %s\n' "$candidate_match"  "$total"
+printf 'ICD-API matches suite:         %s / %s\n' "$icdapi_match"     "$total"
 echo "Full per-case JSON: $(pwd)/comparison.json"

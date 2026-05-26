@@ -1,17 +1,16 @@
-# Nightly conformance run against the WHO ICD-API FHIR container.
+# Nightly conformance run against the WHO ICD-API FHIR endpoint.
 #
 # Triggers weekly (Mon 04:00 UTC) and on-demand. Runs the Newman suite, renders
 # a per-case HTML report, and commits the result back to `main` for GitHub Pages
 # to serve under /icd11-postcoord-conformance/results/.
 #
 # The commit is tagged `[skip ci]` to avoid retrigger loops — without this, the
-# push step would trip any CI configured on `push` events. The result is that
-# only humans and the scheduled trigger can kick the workflow.
+# push step would trip any CI configured on `push` events.
 #
-# Manual prep required before this workflow runs successfully:
-#   1. Enable GitHub Pages on this repo with source = `main` / `/docs`.
-#   2. Confirm the WHO ICD-API container image name + tag below (marked TODO).
-#   3. Optionally configure a deploy secret if a private fork of the image is used.
+# This workflow only runs the ICD-API side (the reference baseline). Comparing
+# a specific candidate server against the suite is a per-organisation choice
+# and lives outside this repo (anyone can `./run.sh --candidate <url> --icdapi
+# <url>` locally and inspect the diff).
 
 name: nightly-conformance
 
@@ -28,6 +27,10 @@ jobs:
   conformance:
     runs-on: ubuntu-latest
     timeout-minutes: 30
+    env:
+      # WHO's public FHIR-testing endpoint for the ICD-API. Replace if WHO
+      # moves the canonical URL or publishes a stable alias.
+      ICDAPI_BASE: https://icdapi-fhir-testing-byfzd6budwdmbabf.northeurope-01.azurewebsites.net/fhir
     steps:
       - name: Checkout
         uses: actions/checkout@v4
@@ -38,38 +41,22 @@ jobs:
           sudo apt-get update -qq
           sudo apt-get install -y jq
 
-      # TODO: confirm the actual public WHO ICD-API container image name + tag.
-      # `run.sh` in this repo (and the broader Ontoserver developer workflow)
-      # references a *local* image called `icd11tofhir-who-api`, but the WHO
-      # publishes the official ICD-API container under a different name on
-      # their registry. Until that's confirmed, this step is intentionally
-      # left as a placeholder — the workflow will fail at the `docker run`
-      # line until a real image:tag is supplied.
-      - name: Start WHO ICD-API container
+      - name: Wait for ICD-API endpoint
         run: |
-          IMAGE="who/icd-api:TODO"            # <-- needs verification
-          PORT=9000
-          docker run -d --name icd-api \
-            -p ${PORT}:80 \
-            -e acceptLicense=true \
-            -e saveAnalytics=false \
-            "$IMAGE"
-          echo "ICDAPI_BASE=http://localhost:${PORT}/icd/release/11/fhir" >> "$GITHUB_ENV"
-
-      - name: Wait for ICD-API healthcheck
-        run: |
-          for i in $(seq 1 60); do
+          for i in $(seq 1 30); do
             if curl -sf "$ICDAPI_BASE/metadata" >/dev/null; then
-              echo "ICD-API ready after ${i}s"
+              echo "ICD-API reachable after ${i}s"
               exit 0
             fi
-            sleep 2
+            sleep 4
           done
-          echo "ICD-API did not become healthy" >&2
-          docker logs icd-api || true
+          echo "ICD-API endpoint $ICDAPI_BASE not reachable" >&2
           exit 1
 
       - name: Run conformance suite
+        # ICD-API side only; no candidate server in CI. Anyone wanting a
+        # head-to-head against their own server runs ./run.sh locally with
+        # --candidate <their-url>.
         run: ./run.sh --icdapi "$ICDAPI_BASE"
 
       - name: Render HTML report
@@ -94,7 +81,3 @@ jobs:
           fi
           git commit -m "Nightly conformance run ${STAMP} [skip ci]"
           git push
-
-      - name: Tear down ICD-API
-        if: always()
-        run: docker rm -f icd-api || true

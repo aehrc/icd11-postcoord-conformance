@@ -81,12 +81,12 @@ def _group_by_category(rows: Iterable[dict]) -> dict[str, list[dict]]:
 def _summary(rows: list[dict]) -> dict[str, int]:
     total = len(rows)
     agree = sum(1 for r in rows if r.get("agree") is True)
-    onto_match = sum(1 for r in rows if r.get("onto") == r.get("expected"))
+    candidate_match = sum(1 for r in rows if r.get("candidate") == r.get("expected"))
     icdapi_match = sum(1 for r in rows if r.get("icdapi") == r.get("expected"))
     return {
         "total": total,
         "agree": agree,
-        "onto_match": onto_match,
+        "candidate_match": candidate_match,
         "icdapi_match": icdapi_match,
     }
 
@@ -112,7 +112,7 @@ def render(rows: list[dict]) -> str:
     parts.append('<div class="summary">')
     parts.append(
         f'<strong>{summary["agree"]} / {summary["total"]}</strong> cross-backend agreement '
-        f'&middot; <strong>{summary["onto_match"]} / {summary["total"]}</strong> Ontoserver matches suite '
+        f'&middot; <strong>{summary["candidate_match"]} / {summary["total"]}</strong> candidate matches suite '
         f'&middot; <strong>{summary["icdapi_match"]} / {summary["total"]}</strong> ICD-API matches suite.'
     )
     parts.append("</div>")
@@ -126,7 +126,7 @@ def render(rows: list[dict]) -> str:
         parts.append(
             "<thead><tr>"
             "<th>id</th><th>expression</th><th>expected</th>"
-            "<th>onto</th><th>icdapi</th><th>agree</th>"
+            "<th>candidate</th><th>icdapi</th><th>agree</th>"
             "<th>refguide</th><th>rationale</th>"
             "</tr></thead><tbody>"
         )
@@ -137,7 +137,7 @@ def render(rows: list[dict]) -> str:
             parts.append(f'<td class="id">{_esc(row.get("id"))}</td>')
             parts.append(f"<td><code>{_esc(row.get('expression'))}</code></td>")
             parts.append(f"<td>{_bool_cell(row.get('expected'))}</td>")
-            parts.append(f"<td>{_bool_cell(row.get('onto'))}</td>")
+            parts.append(f"<td>{_bool_cell(row.get('candidate'))}</td>")
             parts.append(f"<td>{_bool_cell(row.get('icdapi'))}</td>")
             parts.append(f"<td>{_bool_cell(agree)}</td>")
             parts.append(f"<td>{_esc(row.get('refguide'))}</td>")
