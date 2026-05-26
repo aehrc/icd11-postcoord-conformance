@@ -31,21 +31,20 @@ jobs:
       - name: Checkout
         uses: actions/checkout@v4
 
-      - name: Setup Ruby
-        uses: ruby/setup-ruby@v1
-        with:
-          ruby-version: '3.3'
-          bundler-cache: false
-
       - name: Setup Pages
         id: pages
         uses: actions/configure-pages@v5
 
       - name: Install Jekyll
+        # Use the runner's pre-installed Ruby — the aehrc org policy may
+        # restrict third-party actions like ruby/setup-ruby@v1, so we avoid
+        # that and rely on `ubuntu-latest` shipping a usable Ruby.
         run: |
-          gem install bundler
+          ruby --version
+          gem install --user-install bundler jekyll
+          echo "$(ruby -r rubygems -e 'puts Gem.user_dir')/bin" >> "$GITHUB_PATH"
           # Inline Gemfile keeps the repo lean — the conformance suite itself
-          # has no Ruby dependency.
+          # has no Ruby dependency outside the Pages build.
           cat > Gemfile <<'EOF'
           source "https://rubygems.org"
           gem "jekyll", "~> 4.3"
