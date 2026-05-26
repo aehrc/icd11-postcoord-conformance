@@ -1,0 +1,64 @@
+id,expression,system,expectedValid,category,rationale,refguide
+A.1,BA41.0,http://id.who.int/icd/release/11/mms,true,precoordinated,Bare precoordinated stem; no clustering needed,§2.10.2 rule 1
+A.2,2C25.2,http://id.who.int/icd/release/11/mms,true,precoordinated,Bare precoordinated stem combining site and pathology,§2.10
+B.1,BA41.0&XA7RE3,http://id.who.int/icd/release/11/mms,true,single-group-extensions,Single anatomy extension on axis-bearing stem,§2.10.2 Ex 1 (simplified)
+B.2,BA41.0&XA7RE3&XA7NQ7,http://id.who.int/icd/release/11/mms,true,single-group-extensions,Multiple anatomy extensions on same stem (AllowAlways),§2.10.2 Ex 1
+B.3,GB51&XK8G&XN6P4,http://id.who.int/icd/release/11/mms,true,single-group-extensions,Stem with laterality and infectious agent extensions,§2.10.2 Ex 2
+B.4,BA41&XY0Y,http://id.who.int/icd/release/11/mms,true,single-group-type2,Stem with Type-2 discharge diagnosis type extension,§2.10.3 Ex 1
+B.5,5A10&XY6M,http://id.who.int/icd/release/11/mms,true,single-group-type2,Stem with Type-2 diagnosis timing (Present on admission),§2.10.3 Ex 1
+B.6,BD71.4&XK9K&XY69,http://id.who.int/icd/release/11/mms,true,single-group-mixed,Stem with laterality and Type-2 timing (Developed after admission),§2.10.3 Ex 2
+C.1,5A11/5A23,http://id.who.int/icd/release/11/mms,true,multi-stem,Mortality UCOD order: diabetes / diabetic coma,§2.10.2 Ex 3
+C.2,5A23/5A11,http://id.who.int/icd/release/11/mms,true,multi-stem,"Morbidity main order: diabetic coma / diabetes (same codes, reversed)",§2.10.2 Ex 4
+C.3,GC08.0/MG50.27,http://id.who.int/icd/release/11/mms,true,multi-stem,UTI associated with E. coli antimicrobial resistance,§2.10
+C.4,DA63.Z/ME24.90,http://id.who.int/icd/release/11/mms,true,multi-stem,Duodenal ulcer with manifestation: acute GI bleeding,§2.10.1
+D.1,DD51&XK8G/ME24.2&XT5R,http://id.who.int/icd/release/11/mms,true,complex-cluster,Stem & ext / stem & ext: left inguinal hernia with acute obstruction,§2.10.2 Ex 5
+E.1,BA41.0/,http://id.who.int/icd/release/11/mms,false,parser-reject,Trailing group separator,cluster grammar
+E.2,/BA41.0,http://id.who.int/icd/release/11/mms,false,parser-reject,Leading group separator (empty first group),cluster grammar
+E.3,BA41.0//ME24.2,http://id.who.int/icd/release/11/mms,false,parser-reject,Doubled group separator (empty middle group),cluster grammar
+E.4,BA41.0&,http://id.who.int/icd/release/11/mms,false,parser-reject,Trailing extension separator,cluster grammar
+E.5,&XA7RE3,http://id.who.int/icd/release/11/mms,false,parser-reject,Leading extension separator (no stem),cluster grammar
+E.6,BA41.0&&XA7RE3,http://id.who.int/icd/release/11/mms,false,parser-reject,Doubled extension separator,cluster grammar
+E.7,XA7RE3&BA41.0,http://id.who.int/icd/release/11/mms,false,parser-reject,Extension code first in cluster,§2.9 (extensions never in first position)
+E.8,XA7RE3,http://id.who.int/icd/release/11/mms,false,parser-reject,Bare extension code (no stem),§2.9 (extensions never used alone)
+E.9,,http://id.who.int/icd/release/11/mms,false,parser-reject,Empty expression,cluster grammar
+E.10,/,http://id.who.int/icd/release/11/mms,false,parser-reject,Just the group separator,cluster grammar
+E.11,BA41.0&5A11,http://id.who.int/icd/release/11/mms,false,parser-reject,Stem code (5A11) in extension position - extensions must start with X; multiple stems must be joined by '/' not '&',§2.10.2 rules 3-5 / §2.9
+E.12,BA41.0&XA7RE3&5A11,http://id.who.int/icd/release/11/mms,false,parser-reject,Stem code (5A11) appended after a valid extension - last token is a stem in extension position,§2.10.2 rule 5
+F.1,BA41.0&XNOTREAL,http://id.who.int/icd/release/11/mms,false,unknown-code,Known stem with unknown extension code,existence
+F.2,ZZZZZZ&XA7RE3,http://id.who.int/icd/release/11/mms,false,unknown-code,Unknown stem with known extension,existence
+F.3,ZZZZZZ,http://id.who.int/icd/release/11/mms,false,unknown-code,Entirely unknown code,existence
+G.1,BA41.0&XK8G,http://id.who.int/icd/release/11/mms,false,axis-membership,Laterality extension on stem with no laterality axis,§2.10 axis-VS membership
+G.2,BA41.0&XJ7YM,http://id.who.int/icd/release/11/mms,false,axis-membership,Fracture-open-or-closed extension on a non-fracture stem,§2.10 axis-VS membership
+G.3,DD51&XA7RE3,http://id.who.int/icd/release/11/mms,false,axis-membership,Heart anatomy extension on inguinal hernia stem,§2.10 axis-VS membership
+G.4,GB51&XA7RE3,http://id.who.int/icd/release/11/mms,false,axis-membership,Heart anatomy extension on acute pyelonephritis stem,§2.10 axis-VS membership
+H.1,CA41.Z&XN275,http://id.who.int/icd/release/11/mms,false,policy-replicate,Postcoord replicates precoordinated CA41.0 (Acute RSV bronchiolitis),§2.10.1 explicit prohibition
+H.2,NC32.Z&XA8U33,http://id.who.int/icd/release/11/mms,false,policy-replicate,Postcoord replicates precoordinated NC32.2 (Fracture of shaft of ulna),§2.10.1 explicit prohibition
+I.1,BA41.0&XY0Y,http://id.who.int/icd/release/11/mms,true,type2-universal,Discharge type (main condition) on a stem - Type-2 universal,§2.9 Type-2 universal
+I.2,BA41.0&XY6M,http://id.who.int/icd/release/11/mms,true,type2-universal,Diagnosis timing (Present on admission) on a stem - Type-2 universal,§2.9 Type-2 universal
+I.3,BA41.0&XY69,http://id.who.int/icd/release/11/mms,true,type2-universal,Diagnosis timing (Developed after admission) on a stem - Type-2 universal,§2.9 Type-2 universal
+I.4,BA41.0&XY85,http://id.who.int/icd/release/11/mms,true,type2-universal,Diagnosis timing (Uncertain) on a stem - Type-2 universal,§2.9 Type-2 universal
+J.1,CB41,http://id.who.int/icd/release/11/mms,false,required-axis-missing,Respiratory failure - required Has-causing-condition axis missing makes code abstract,§2.10 mandatory postcoord
+J.2,CB41/1D00,http://id.who.int/icd/release/11/mms,true,required-axis-supplied,Respiratory failure with infectious encephalitis as causing condition (multi-stem fulfilment),§2.10 mandatory postcoord
+K.1,GB51&XK8G&XK9K,http://id.who.int/icd/release/11/mms,false,allow-multiple-values,Two laterality values (Left AND Right) on same axis - violates AllowMultipleValues for laterality,§2.10 axis policy
+K.2,5A11&XY0Y&XY6M,http://id.who.int/icd/release/11/mms,false,allow-multiple-values,Two Type-2 diagnosis descriptors (discharge type AND timing) - Type-2 axes typically NotAllowed multi,§2.9 Type-2 semantics
+K.3,BD71.4&XK8G&XK9K,http://id.who.int/icd/release/11/mms,false,allow-multiple-values,Two laterality values on a different stem - reproduces K.1 pattern on another concept,§2.10 axis policy
+L.1,5A11/5A23,http://id.who.int/icd/release/11/mms,true,ordering,Same as C.1; documents mortality-cluster order (UCOD first),§2.10.2 Ex 3
+L.2,5A23/5A11,http://id.who.int/icd/release/11/mms,true,ordering,Same as C.2; documents morbidity-cluster order (main condition first) - reversed from L.1 but equally valid,§2.10.2 Ex 4
+M.1,b110,http://id.who.int/icd/release/11/icf,true,icf-bare,Bare ICF body-function code (Consciousness functions),§2.11 / refguide functioning
+M.2,d530,http://id.who.int/icd/release/11/icf,true,icf-bare,Bare ICF activity code (Toileting),§2.11
+M.3,s410,http://id.who.int/icd/release/11/icf,true,icf-bare,Bare ICF body-structure code (Cardiovascular system),§2.11
+M.4,e310,http://id.who.int/icd/release/11/icf,true,icf-bare,Bare ICF environmental factor code (Immediate family),§2.11
+M.5,b1100,http://id.who.int/icd/release/11/icf,true,icf-bare,Bare ICF 5-char granular code (State of consciousness),§2.11
+M.6,b110.3,http://id.who.int/icd/release/11/icf,false,icf-qualifier,Classical ICF qualifier syntax (b110 with moderate impairment) - not encoded as a separate concept in the FHIR linearization,§2.11 note
+M.7,b110.5,http://id.who.int/icd/release/11/icf,false,icf-qualifier,Classical ICF qualifier with invalid qualifier value (5 is not a valid ICF qualifier),§2.11 note
+M.8,b110&XA7RE3,http://id.who.int/icd/release/11/icf,false,icf-cluster,"Attempted ICD-11 cluster syntax on ICF code with MMS extension - cross-linearization should not validate","§2.10 (cluster syntax is ICD-11 MMS, not ICF)"
+M.9,b999,http://id.who.int/icd/release/11/icf,false,icf-unknown,"Unknown ICF code",existence
+M.10,b110/d530,http://id.who.int/icd/release/11/icf,false,icf-cluster,"Multi-stem cluster of two ICF codes - ICF does not use ICD-11 cluster syntax","§2.10 (clustering not defined for ICF)"
+N.1,4A20&XT0S,http://id.who.int/icd/release/11/mms,true,multi-value-allowed-axis,"NotAllowed axis (timeInLife on 4A20) with single value - sanity positive",§2.10 AllowMultipleValues=NotAllowed
+N.2,4A20&XT0S&XT4Z,http://id.who.int/icd/release/11/mms,false,multi-value-allowed-axis,"NotAllowed axis (timeInLife on 4A20) with two values from same axis - violates policy",§2.10 AllowMultipleValues=NotAllowed
+N.3,PF2Y&XE266&XE9D,http://id.who.int/icd/release/11/mms,true,multi-value-allowed-axis,"AllowedExceptFromSameBlock (placeOfOccurrence on PF2Y) with two values from different top-level blocks - permitted",§2.10 AllowMultipleValues=AllowedExceptFromSameBlock
+N.4,PF2Y&XE9XY&XE9P0,http://id.who.int/icd/release/11/mms,false,multi-value-allowed-axis,"AllowedExceptFromSameBlock (placeOfOccurrence on PF2Y) with two values from same block (both descendants of XE266) - violates policy",§2.10 AllowMultipleValues=AllowedExceptFromSameBlock
+O.1,BA52&XA7RE3,http://id.who.int/icd/release/11/mms,false,axisless-stem-type1,"Type-1 stem-specific extension (anatomy XA7RE3) applied to a stem (BA52) with no declared postcoordination axes - WHO 2.10.1 disallows",§2.10.1
+O.2,BA52&XY0Y,http://id.who.int/icd/release/11/mms,true,axisless-stem-type2,"Type-2 universal extension (XY0Y laterality-unspecified) applied to a stem (BA52) with no declared axes - WHO 2.10.3 admits universals against any stem",§2.10.3
+O.3,BA52&XY6M,http://id.who.int/icd/release/11/mms,true,axisless-stem-type2,"Type-2 universal extension (XY6M timing-unspecified) applied to an axisless stem - second universal sentinel for coverage",§2.10.3
+O.4,BA52&XY0Y&XY6M,http://id.who.int/icd/release/11/mms,true,axisless-stem-type2,"Two Type-2 universal extensions stacked on an axisless stem - WHO 2.10.3 admits multiple universals; no Type-1 axis policy applies",§2.10.3

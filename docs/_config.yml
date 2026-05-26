@@ -17,6 +17,7 @@ header_pages:
   - categories.md
   - refguide-summary.md
   - conformance-report-explained.md
+  - runner.md
 
 # Drop build noise out of the published site.
 exclude:
