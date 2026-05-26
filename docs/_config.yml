@@ -1,0 +1,33 @@
+title: "ICD-11 Postcoordination Conformance Suite"
+description: >-
+  A Postman/Newman-driven test suite comparing FHIR terminology servers'
+  handling of ICD-11 postcoordinated cluster expressions, keyed to the WHO
+  Reference Guide §2.9-§2.11.
+lang: en
+
+# GitHub Pages serves the site under https://<owner>.github.io/<repo>/, so
+# baseurl must match the repo name. Update if the repo is renamed.
+baseurl: "/icd11-postcoord-conformance"
+url: ""
+
+theme: minima
+
+header_pages:
+  - index.md
+  - categories.md
+  - refguide-summary.md
+  - conformance-report-explained.md
+
+# Drop build noise out of the published site.
+exclude:
+  - Gemfile
+  - Gemfile.lock
+  - vendor
+  - node_modules
+  - .jekyll-cache
+  - .jekyll-metadata
+  - "*.gem"
+  - "*.gemspec"
+
+# Friendly URLs (drop .html extension).
+permalink: pretty

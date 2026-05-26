@@ -1,0 +1,96 @@
+{
+  "info": {
+    "name": "ICD-11 Postcoordination Validation Suite",
+    "description": "Postman collection driving CSV-based postcoord test cases against any FHIR terminology server that supports `CodeSystem.$validate-code`. Designed to be run via Newman with `-d postcoord-suite.csv`. Run separately against Ontoserver and the WHO ICD-API FHIR endpoint; diff the JSON exports per case ID. See README.md for the rule categories.",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+  },
+  "item": [
+    {
+      "name": "validate-code",
+      "request": {
+        "method": "GET",
+        "header": [
+          { "key": "Accept", "value": "application/fhir+json" }
+        ],
+        "url": {
+          "raw": "{{baseUrl}}/CodeSystem/$validate-code",
+          "host": [ "{{baseUrl}}" ],
+          "path": [ "CodeSystem", "$validate-code" ]
+        }
+      },
+      "event": [
+        {
+          "listen": "prerequest",
+          "script": {
+            "type": "text/javascript",
+            "exec": [
+              "// URL-encode the system + expression and append as raw query string. Postman's",
+              "// query-array path doesn't encode `&` or `/` inside CSV-supplied values, which",
+              "// silently mis-parses cluster expressions like `BA41.0&XK8G` as two params.",
+              "let system = pm.iterationData.get('system');",
+              "let expression = pm.iterationData.get('expression') || '';",
+              "let raw = `${pm.variables.replaceIn('{{baseUrl}}')}/CodeSystem/$validate-code`",
+              "        + `?url=${encodeURIComponent(system)}`",
+              "        + `&code=${encodeURIComponent(expression)}`;",
+              "pm.request.url = raw;"
+            ]
+          }
+        },
+        {
+          "listen": "test",
+          "script": {
+            "type": "text/javascript",
+            "exec": [
+              "// Extract the FHIR Parameters.result boolean. Treat parse errors / 4xx / missing-result as `false`.",
+              "let backend = pm.environment.get('backendLabel') || pm.environment.name || 'unknown';",
+              "let id = pm.iterationData.get('id');",
+              "let expression = pm.iterationData.get('expression');",
+              "let expected = pm.iterationData.get('expectedValid') === 'true';",
+              "let category = pm.iterationData.get('category');",
+              "let actual = null;",
+              "let httpStatus = pm.response.code;",
+              "let message = null;",
+              "",
+              "try {",
+              "    let body = pm.response.json();",
+              "    if (body && Array.isArray(body.parameter)) {",
+              "        for (const p of body.parameter) {",
+              "            if (p.name === 'result' && typeof p.valueBoolean === 'boolean') {",
+              "                actual = p.valueBoolean;",
+              "            }",
+              "            if (p.name === 'message' && typeof p.valueString === 'string') {",
+              "                message = p.valueString;",
+              "            }",
+              "        }",
+              "    }",
+              "    if (actual === null && body && body.resourceType === 'OperationOutcome') {",
+              "        actual = false;",
+              "        if (Array.isArray(body.issue) && body.issue[0]) {",
+              "            message = body.issue[0].diagnostics || body.issue[0].details && body.issue[0].details.text;",
+              "        }",
+              "    }",
+              "} catch (e) {",
+              "    actual = false;",
+              "    message = 'response not JSON';",
+              "}",
+              "",
+              "if (actual === null) { actual = (httpStatus >= 200 && httpStatus < 300); }",
+              "",
+              "// Emit a single-line record so the Newman JSON output is easy to diff per backend.",
+              "let record = { backend, id, category, expression, expected, actual, match: actual === expected, http: httpStatus, message };",
+              "console.log('CASE_RESULT ' + JSON.stringify(record));",
+              "",
+              "pm.test(`${id} [${backend}] ${expression} -> expected=${expected}, actual=${actual}`, () => {",
+              "    pm.expect(actual).to.equal(expected);",
+              "});"
+            ]
+          }
+        }
+      ]
+    }
+  ],
+  "variable": [
+    { "key": "baseUrl", "value": "" },
+    { "key": "backendLabel", "value": "" }
+  ]
+}
