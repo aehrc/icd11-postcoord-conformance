@@ -1,0 +1,158 @@
+<!DOCTYPE html>
+<html lang="en"><head>
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1"><!-- Begin Jekyll SEO tag v2.9.0 -->
+<title>ICD-11 Postcoordination Conformance Suite | A Postman/Newman-driven test suite comparing FHIR terminology servers’ handling of ICD-11 postcoordinated cluster expressions, keyed to the WHO Reference Guide §2.9-§2.11.</title>
+<meta name="generator" content="Jekyll v4.4.1" />
+<meta property="og:title" content="ICD-11 Postcoordination Conformance Suite" />
+<meta property="og:locale" content="en" />
+<meta name="description" content="A Postman/Newman-driven test suite comparing FHIR terminology servers’ handling of ICD-11 postcoordinated cluster expressions, keyed to the WHO Reference Guide §2.9-§2.11." />
+<meta name="twitter:description" property="og:description" content="A Postman/Newman-driven test suite comparing FHIR terminology servers’ handling of ICD-11 postcoordinated cluster expressions, keyed to the WHO Reference Guide §2.9-§2.11." />
+<link rel="canonical" href="/icd11-postcoord-conformance/" />
+<meta property="og:url" content="/icd11-postcoord-conformance/" />
+<meta property="og:site_name" content="ICD-11 Postcoordination Conformance Suite" />
+<meta property="og:type" content="website" />
+<meta name="twitter:card" content="summary" />
+<meta name="twitter:title" content="ICD-11 Postcoordination Conformance Suite" />
+<script type="application/ld+json">
+{"@context":"https://schema.org","@type":"WebSite","description":"A Postman/Newman-driven test suite comparing FHIR terminology servers’ handling of ICD-11 postcoordinated cluster expressions, keyed to the WHO Reference Guide §2.9-§2.11.","headline":"ICD-11 Postcoordination Conformance Suite","name":"ICD-11 Postcoordination Conformance Suite","url":"/icd11-postcoord-conformance/"}</script>
+<!-- End Jekyll SEO tag -->
+<link rel="stylesheet" href="/icd11-postcoord-conformance/assets/main.css"><link type="application/atom+xml" rel="alternate" href="/icd11-postcoord-conformance/feed.xml" title="ICD-11 Postcoordination Conformance Suite" /></head>
+<body><header class="site-header" role="banner">
+
+  <div class="wrapper"><a class="site-title" rel="author" href="/icd11-postcoord-conformance/">ICD-11 Postcoordination Conformance Suite</a><nav class="site-nav">
+        <input type="checkbox" id="nav-trigger" class="nav-trigger" />
+        <label for="nav-trigger">
+          <span class="menu-icon">
+            <svg viewBox="0 0 18 15" width="18px" height="15px">
+              <path d="M18,1.484c0,0.82-0.665,1.484-1.484,1.484H1.484C0.665,2.969,0,2.304,0,1.484l0,0C0,0.665,0.665,0,1.484,0 h15.032C17.335,0,18,0.665,18,1.484L18,1.484z M18,7.516C18,8.335,17.335,9,16.516,9H1.484C0.665,9,0,8.335,0,7.516l0,0 c0-0.82,0.665-1.484,1.484-1.484h15.032C17.335,6.031,18,6.696,18,7.516L18,7.516z M18,13.516C18,14.335,17.335,15,16.516,15H1.484 C0.665,15,0,14.335,0,13.516l0,0c0-0.82,0.665-1.483,1.484-1.483h15.032C17.335,12.031,18,12.695,18,13.516L18,13.516z"/>
+            </svg>
+          </span>
+        </label>
+
+        <div class="trigger"><a class="page-link" href="/icd11-postcoord-conformance/">ICD-11 Postcoordination Conformance Suite</a><a class="page-link" href="/icd11-postcoord-conformance/categories/">Test Categories</a><a class="page-link" href="/icd11-postcoord-conformance/refguide-summary/">Reference Guide Summary</a><a class="page-link" href="/icd11-postcoord-conformance/conformance-report-explained/">Conformance Report Explained</a><a class="page-link" href="/icd11-postcoord-conformance/runner/">Run the suite against your server</a></div>
+      </nav></div>
+</header>
+<main class="page-content" aria-label="Content">
+      <div class="wrapper">
+        <article class="post">
+
+  <header class="post-header">
+    <h1 class="post-title">ICD-11 Postcoordination Conformance Suite</h1>
+  </header>
+
+  <div class="post-content">
+    <p>This site documents a portable conformance test suite for <strong>ICD-11 postcoordinated cluster expressions</strong> evaluated against FHIR terminology servers via <code class="language-plaintext highlighter-rouge">CodeSystem/$validate-code</code>. The suite runs side-by-side against two backends — your candidate server and the WHO ICD-API FHIR endpoint — and diffs per-case agreement. No coupling to any specific terminology server implementation.</p>
+
+<h2 id="purpose">Purpose</h2>
+
+<p>The WHO ICD-11 Reference Guide defines a non-trivial postcoordination grammar (§2.9-§2.11). Terminology servers vary in how completely they enforce it. The four-quadrant matrix below (extension class x stem axis presence) is the spine of the suite:</p>
+
+<table>
+  <thead>
+    <tr>
+      <th>Stem state</th>
+      <th>Type-1 (stem-specific) extension</th>
+      <th>Type-2 (universal) extension</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td>Declares Type-1 axes, ext in axis VS</td>
+      <td><strong>valid</strong></td>
+      <td><strong>valid</strong></td>
+    </tr>
+    <tr>
+      <td>Declares Type-1 axes, ext not in axis VS</td>
+      <td><strong>invalid</strong> (axis policy)</td>
+      <td><strong>valid</strong> (universal overrides)</td>
+    </tr>
+    <tr>
+      <td>Declares no Type-1 axes</td>
+      <td><strong>invalid</strong> (no axis admits it)</td>
+      <td><strong>valid</strong> (§2.10.3)</td>
+    </tr>
+  </tbody>
+</table>
+
+<p>A backend that “treats all extensions uniformly” fails the bottom-left and the right-hand column. A backend with strict Type-1 axis-VS membership but no Type-2 awareness passes the top-left and bottom-left, but fails Type-2 cases.</p>
+
+<p>See <a href="categories.html">Categories</a> for the full per-category breakdown (A through O, 18 categories, 63 cases at scaffold time) and <a href="refguide-summary.html">Reference Guide Summary</a> for the paraphrased WHO rules each category traces back to.</p>
+
+<h2 id="latest-results">Latest results</h2>
+
+<p>A scheduled CI run (see <code class="language-plaintext highlighter-rouge">.github/workflows/nightly-conformance.yml</code>) executes the suite weekly against the WHO ICD-API container and publishes the rendered HTML report below.</p>
+
+<ul>
+  <li><a href="results/latest.html">Latest report</a> (refreshed by CI; placeholder until the workflow has run)</li>
+</ul>
+
+<p>Dated runs are kept under <code class="language-plaintext highlighter-rouge">results/icd-api-YYYY-MM-DD.html</code> so trends are visible over time.</p>
+
+<h2 id="how-to-read-a-report">How to read a report</h2>
+
+<p>Each case carries an <code class="language-plaintext highlighter-rouge">expected</code> (the suite’s belief, grounded in the refguide), and per-backend <code class="language-plaintext highlighter-rouge">candidate</code> / <code class="language-plaintext highlighter-rouge">icdapi</code> actuals. The <code class="language-plaintext highlighter-rouge">agree</code> flag is <code class="language-plaintext highlighter-rouge">candidate === icdapi</code>. A row where both backends agree but disagree with <code class="language-plaintext highlighter-rouge">expected</code> is interesting — it means either the suite belief is wrong or both backends share the same gap. See <a href="conformance-report-explained.html">Conformance Report Explained</a>.</p>
+
+<h2 id="how-to-run-against-your-server">How to run against your server</h2>
+
+<p>The repository ships everything needed to run the suite locally:</p>
+
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code>git clone https://github.com/aehrc/icd11-postcoord-conformance.git
+<span class="nb">cd </span>icd11-postcoord-conformance
+
+<span class="c"># Newman-based comparison (need newman + jq).</span>
+brew <span class="nb">install </span>newman jq                <span class="c"># or: npm i -g newman</span>
+
+<span class="c"># Point at your candidate server and a WHO ICD-API endpoint.</span>
+./run.sh <span class="nt">--candidate</span> http://localhost:8080/fhir <span class="se">\</span>
+         <span class="nt">--icdapi</span>    http://localhost:9000/fhir
+</code></pre></div></div>
+
+<p>Outputs land in <code class="language-plaintext highlighter-rouge">comparison.json</code> (machine-readable) and a summary table on stdout. See the <a href="https://github.com/aehrc/icd11-postcoord-conformance#quick-start">repo README</a> for Postman desktop instructions and the one-time CodeSystem fixture upload (via standard FHIR REST — works with any terminology server).</p>
+
+<h2 id="caveats">Caveats</h2>
+
+<ul>
+  <li><strong>Suite belief is not authoritative.</strong> §2.10 carries policy rules (e.g. “do not replicate a precoordinated code”) that a <code class="language-plaintext highlighter-rouge">$validate-code</code> operation may or may not enforce. Disagreement on those cases is data, not a bug.</li>
+  <li><strong><code class="language-plaintext highlighter-rouge">expected</code> is the WHO refguide oracle</strong>, not what any given backend chooses to enforce.</li>
+  <li><strong>Required-axis and AllowMultipleValues cases (J, K, N) are speculative</strong> in places — they probe published policy and the agreement matrix surfaces gaps in either side.</li>
+</ul>
+
+<h2 id="repository">Repository</h2>
+
+<p>Source code, CSV, Postman collection, run script, and CI workflow live at:
+<strong><a href="https://github.com/aehrc/icd11-postcoord-conformance">github.com/aehrc/icd11-postcoord-conformance</a></strong></p>
+
+  </div>
+
+</article>
+
+      </div>
+    </main><footer class="site-footer h-card">
+  <data class="u-url" href="/icd11-postcoord-conformance/"></data>
+
+  <div class="wrapper">
+
+    <h2 class="footer-heading">ICD-11 Postcoordination Conformance Suite</h2>
+
+    <div class="footer-col-wrapper">
+      <div class="footer-col footer-col-1">
+        <ul class="contact-list">
+          <li class="p-name">ICD-11 Postcoordination Conformance Suite</li></ul>
+      </div>
+
+      <div class="footer-col footer-col-2"><ul class="social-media-list"></ul>
+</div>
+
+      <div class="footer-col footer-col-3">
+        <p>A Postman/Newman-driven test suite comparing FHIR terminology servers&#39; handling of ICD-11 postcoordinated cluster expressions, keyed to the WHO Reference Guide §2.9-§2.11.</p>
+      </div>
+    </div>
+
+  </div>
+
+</footer>
+</body>
+
+</html>

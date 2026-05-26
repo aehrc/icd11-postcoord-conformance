@@ -1,0 +1,198 @@
+<!DOCTYPE html>
+<html lang="en"><head>
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1"><!-- Begin Jekyll SEO tag v2.9.0 -->
+<title>Conformance Report Explained | ICD-11 Postcoordination Conformance Suite</title>
+<meta name="generator" content="Jekyll v4.4.1" />
+<meta property="og:title" content="Conformance Report Explained" />
+<meta property="og:locale" content="en" />
+<meta name="description" content="A Postman/Newman-driven test suite comparing FHIR terminology servers’ handling of ICD-11 postcoordinated cluster expressions, keyed to the WHO Reference Guide §2.9-§2.11." />
+<meta name="twitter:description" property="og:description" content="A Postman/Newman-driven test suite comparing FHIR terminology servers’ handling of ICD-11 postcoordinated cluster expressions, keyed to the WHO Reference Guide §2.9-§2.11." />
+<link rel="canonical" href="/icd11-postcoord-conformance/conformance-report-explained/" />
+<meta property="og:url" content="/icd11-postcoord-conformance/conformance-report-explained/" />
+<meta property="og:site_name" content="ICD-11 Postcoordination Conformance Suite" />
+<meta property="og:type" content="website" />
+<meta name="twitter:card" content="summary" />
+<meta name="twitter:title" content="Conformance Report Explained" />
+<script type="application/ld+json">
+{"@context":"https://schema.org","@type":"WebPage","description":"A Postman/Newman-driven test suite comparing FHIR terminology servers’ handling of ICD-11 postcoordinated cluster expressions, keyed to the WHO Reference Guide §2.9-§2.11.","headline":"Conformance Report Explained","url":"/icd11-postcoord-conformance/conformance-report-explained/"}</script>
+<!-- End Jekyll SEO tag -->
+<link rel="stylesheet" href="/icd11-postcoord-conformance/assets/main.css"><link type="application/atom+xml" rel="alternate" href="/icd11-postcoord-conformance/feed.xml" title="ICD-11 Postcoordination Conformance Suite" /></head>
+<body><header class="site-header" role="banner">
+
+  <div class="wrapper"><a class="site-title" rel="author" href="/icd11-postcoord-conformance/">ICD-11 Postcoordination Conformance Suite</a><nav class="site-nav">
+        <input type="checkbox" id="nav-trigger" class="nav-trigger" />
+        <label for="nav-trigger">
+          <span class="menu-icon">
+            <svg viewBox="0 0 18 15" width="18px" height="15px">
+              <path d="M18,1.484c0,0.82-0.665,1.484-1.484,1.484H1.484C0.665,2.969,0,2.304,0,1.484l0,0C0,0.665,0.665,0,1.484,0 h15.032C17.335,0,18,0.665,18,1.484L18,1.484z M18,7.516C18,8.335,17.335,9,16.516,9H1.484C0.665,9,0,8.335,0,7.516l0,0 c0-0.82,0.665-1.484,1.484-1.484h15.032C17.335,6.031,18,6.696,18,7.516L18,7.516z M18,13.516C18,14.335,17.335,15,16.516,15H1.484 C0.665,15,0,14.335,0,13.516l0,0c0-0.82,0.665-1.483,1.484-1.483h15.032C17.335,12.031,18,12.695,18,13.516L18,13.516z"/>
+            </svg>
+          </span>
+        </label>
+
+        <div class="trigger"><a class="page-link" href="/icd11-postcoord-conformance/">ICD-11 Postcoordination Conformance Suite</a><a class="page-link" href="/icd11-postcoord-conformance/categories/">Test Categories</a><a class="page-link" href="/icd11-postcoord-conformance/refguide-summary/">Reference Guide Summary</a><a class="page-link" href="/icd11-postcoord-conformance/conformance-report-explained/">Conformance Report Explained</a><a class="page-link" href="/icd11-postcoord-conformance/runner/">Run the suite against your server</a></div>
+      </nav></div>
+</header>
+<main class="page-content" aria-label="Content">
+      <div class="wrapper">
+        <article class="post">
+
+  <header class="post-header">
+    <h1 class="post-title">Conformance Report Explained</h1>
+  </header>
+
+  <div class="post-content">
+    <p>The runner (<code class="language-plaintext highlighter-rouge">run.sh</code>) emits a structured <code class="language-plaintext highlighter-rouge">comparison.json</code> file. Each entry corresponds to one case from <code class="language-plaintext highlighter-rouge">postcoord-suite.csv</code>. This page explains the fields and how to interpret the agreement matrix.</p>
+
+<h2 id="schema">Schema</h2>
+
+<div class="language-json highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="p">{</span><span class="w">
+  </span><span class="nl">"id"</span><span class="p">:</span><span class="w">         </span><span class="s2">"B.1"</span><span class="p">,</span><span class="w">
+  </span><span class="nl">"category"</span><span class="p">:</span><span class="w">   </span><span class="s2">"single-group-extensions"</span><span class="p">,</span><span class="w">
+  </span><span class="nl">"expression"</span><span class="p">:</span><span class="w"> </span><span class="s2">"BA41.0&amp;XA7RE3"</span><span class="p">,</span><span class="w">
+  </span><span class="nl">"expected"</span><span class="p">:</span><span class="w">   </span><span class="kc">true</span><span class="p">,</span><span class="w">
+  </span><span class="nl">"candidate"</span><span class="p">:</span><span class="w">  </span><span class="kc">true</span><span class="p">,</span><span class="w">
+  </span><span class="nl">"icdapi"</span><span class="p">:</span><span class="w">     </span><span class="kc">true</span><span class="p">,</span><span class="w">
+  </span><span class="nl">"agree"</span><span class="p">:</span><span class="w">      </span><span class="kc">true</span><span class="p">,</span><span class="w">
+  </span><span class="nl">"refguide"</span><span class="p">:</span><span class="w">   </span><span class="s2">"§2.10.2 Ex 1 (simplified)"</span><span class="p">,</span><span class="w">
+  </span><span class="nl">"rationale"</span><span class="p">:</span><span class="w">  </span><span class="s2">"Single anatomy extension on axis-bearing stem"</span><span class="w">
+</span><span class="p">}</span><span class="w">
+</span></code></pre></div></div>
+
+<table>
+  <thead>
+    <tr>
+      <th>Field</th>
+      <th>Meaning</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td><code class="language-plaintext highlighter-rouge">id</code></td>
+      <td>Stable case identifier (e.g. <code class="language-plaintext highlighter-rouge">B.1</code>). The letter encodes the category; the number is the position within the category.</td>
+    </tr>
+    <tr>
+      <td><code class="language-plaintext highlighter-rouge">category</code></td>
+      <td>Human-readable category slug from the CSV (e.g. <code class="language-plaintext highlighter-rouge">single-group-extensions</code>). Same as the letter mapping in <a href="categories.html">Categories</a>.</td>
+    </tr>
+    <tr>
+      <td><code class="language-plaintext highlighter-rouge">expression</code></td>
+      <td>The literal <code class="language-plaintext highlighter-rouge">code</code> value sent to <code class="language-plaintext highlighter-rouge">$validate-code</code>. May contain <code class="language-plaintext highlighter-rouge">&amp;</code>, <code class="language-plaintext highlighter-rouge">/</code>, or be empty.</td>
+    </tr>
+    <tr>
+      <td><code class="language-plaintext highlighter-rouge">expected</code></td>
+      <td>The <strong>suite’s belief</strong> about whether the expression should validate. Grounded in the refguide, but not authoritative.</td>
+    </tr>
+    <tr>
+      <td><code class="language-plaintext highlighter-rouge">candidate</code></td>
+      <td>The <code class="language-plaintext highlighter-rouge">Parameters.result</code> boolean returned by your candidate terminology server. <code class="language-plaintext highlighter-rouge">null</code> if the server didn’t return a parseable response.</td>
+    </tr>
+    <tr>
+      <td><code class="language-plaintext highlighter-rouge">icdapi</code></td>
+      <td>The <code class="language-plaintext highlighter-rouge">Parameters.result</code> boolean returned by the WHO ICD-API FHIR endpoint. Same null semantics.</td>
+    </tr>
+    <tr>
+      <td><code class="language-plaintext highlighter-rouge">agree</code></td>
+      <td><code class="language-plaintext highlighter-rouge">candidate === icdapi</code>. True when both backends produce the same answer, regardless of whether either matches <code class="language-plaintext highlighter-rouge">expected</code>.</td>
+    </tr>
+    <tr>
+      <td><code class="language-plaintext highlighter-rouge">refguide</code></td>
+      <td>Citation back to the WHO refguide section that justifies the <code class="language-plaintext highlighter-rouge">expected</code> value.</td>
+    </tr>
+    <tr>
+      <td><code class="language-plaintext highlighter-rouge">rationale</code></td>
+      <td>Free-text justification for the case.</td>
+    </tr>
+  </tbody>
+</table>
+
+<h2 id="how-to-read-the-agreement-matrix">How to read the agreement matrix</h2>
+
+<p>The interesting cases are <em>not</em> the ones where everything matches. Pay particular attention to four shapes:</p>
+
+<h3 id="both-backends-agree-with-expected-the-boring-case">Both backends agree with <code class="language-plaintext highlighter-rouge">expected</code> (the boring case)</h3>
+
+<div class="language-json highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="p">{</span><span class="w"> </span><span class="nl">"expected"</span><span class="p">:</span><span class="w"> </span><span class="kc">true</span><span class="p">,</span><span class="w"> </span><span class="nl">"candidate"</span><span class="p">:</span><span class="w">  </span><span class="kc">true</span><span class="p">,</span><span class="w"> </span><span class="nl">"icdapi"</span><span class="p">:</span><span class="w"> </span><span class="kc">true</span><span class="p">,</span><span class="w"> </span><span class="nl">"agree"</span><span class="p">:</span><span class="w"> </span><span class="kc">true</span><span class="w"> </span><span class="p">}</span><span class="w">
+</span></code></pre></div></div>
+
+<p>Sanity check passing. Move on.</p>
+
+<h3 id="both-backends-agree-but-disagree-with-expected">Both backends agree, but disagree with <code class="language-plaintext highlighter-rouge">expected</code></h3>
+
+<div class="language-json highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="p">{</span><span class="w"> </span><span class="nl">"expected"</span><span class="p">:</span><span class="w"> </span><span class="kc">true</span><span class="p">,</span><span class="w"> </span><span class="nl">"candidate"</span><span class="p">:</span><span class="w"> </span><span class="kc">false</span><span class="p">,</span><span class="w"> </span><span class="nl">"icdapi"</span><span class="p">:</span><span class="w"> </span><span class="kc">false</span><span class="p">,</span><span class="w"> </span><span class="nl">"agree"</span><span class="p">:</span><span class="w"> </span><span class="kc">true</span><span class="w"> </span><span class="p">}</span><span class="w">
+</span></code></pre></div></div>
+
+<p>Either the suite belief is wrong (the refguide rule may be policy that neither backend enforces), or both backends share the same gap. This is data, <strong>not</strong> a bug report against either backend. Common causes:</p>
+
+<ul>
+  <li>Type-2 universal extensions (category I, O.2-O.4) — neither implementation currently distinguishes universals from Type-1 stem-specifics.</li>
+  <li>Replication-prohibition rule (category H) — content-modelling policy that <code class="language-plaintext highlighter-rouge">$validate-code</code> may legitimately not enforce.</li>
+</ul>
+
+<h3 id="backends-disagree-one-matches-expected">Backends disagree, one matches <code class="language-plaintext highlighter-rouge">expected</code></h3>
+
+<div class="language-json highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="p">{</span><span class="w"> </span><span class="nl">"expected"</span><span class="p">:</span><span class="w"> </span><span class="kc">false</span><span class="p">,</span><span class="w"> </span><span class="nl">"candidate"</span><span class="p">:</span><span class="w"> </span><span class="kc">false</span><span class="p">,</span><span class="w"> </span><span class="nl">"icdapi"</span><span class="p">:</span><span class="w"> </span><span class="kc">true</span><span class="p">,</span><span class="w"> </span><span class="nl">"agree"</span><span class="p">:</span><span class="w"> </span><span class="kc">false</span><span class="w"> </span><span class="p">}</span><span class="w">
+</span></code></pre></div></div>
+
+<p>The candidate backend got it right per the refguide; the other did not (or vice versa). Worth investigating which interpretation is correct — sometimes the suite belief is right, sometimes the alternative reading is.</p>
+
+<h3 id="backends-disagree-neither-matches-expected">Backends disagree, neither matches <code class="language-plaintext highlighter-rouge">expected</code></h3>
+
+<div class="language-json highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="p">{</span><span class="w"> </span><span class="nl">"expected"</span><span class="p">:</span><span class="w"> </span><span class="kc">true</span><span class="p">,</span><span class="w"> </span><span class="nl">"candidate"</span><span class="p">:</span><span class="w"> </span><span class="kc">false</span><span class="p">,</span><span class="w"> </span><span class="nl">"icdapi"</span><span class="p">:</span><span class="w"> </span><span class="kc">null</span><span class="p">,</span><span class="w"> </span><span class="nl">"agree"</span><span class="p">:</span><span class="w"> </span><span class="kc">false</span><span class="w"> </span><span class="p">}</span><span class="w">
+</span></code></pre></div></div>
+
+<p>Likely an environmental issue (e.g. ICD-API container down, content missing, parser bug). <code class="language-plaintext highlighter-rouge">null</code> actuals are a flag to check the run log before treating the row as substantive.</p>
+
+<h2 id="caveats">Caveats</h2>
+
+<ul>
+  <li><strong><code class="language-plaintext highlighter-rouge">expected</code> is the WHO refguide oracle</strong>, not the spec of any particular backend. The suite intentionally encodes rules that some backends may not enforce (replication prohibition, Type-2 universals, AllowMultipleValues policy) — surfacing the gap is the point.</li>
+  <li><strong>Required-axis cases (J)</strong> are particularly delicate. WHO models “required” via per-stem subproperty groups; whether the FHIR projection preserves the flag, and whether a backend chooses to enforce it at validate-time vs treating it as advisory, varies.</li>
+  <li><strong>AllowMultipleValues (K, N) cases</strong> depend on the per-axis policy declared in the WHO content model for the stems used. If WHO updates the content model, the suite’s <code class="language-plaintext highlighter-rouge">expected</code> values may need to be revisited.</li>
+  <li><strong>ICF cases (M)</strong> probe converter coverage, not just validation. The current ICD11toFHIR converter emits only bare ICF concepts (no qualifier-bearing concepts like <code class="language-plaintext highlighter-rouge">b110.3</code>), so M.6-M.10 will fail on both backends until that changes.</li>
+</ul>
+
+<h2 id="summary-metrics">Summary metrics</h2>
+
+<p><code class="language-plaintext highlighter-rouge">run.sh</code> also prints three aggregate counts:</p>
+
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>Candidate-vs-ICDAPI agreement: 51 / 63
+Candidate matches suite:       47 / 63
+ICD-API matches suite:         49 / 63
+</code></pre></div></div>
+
+<p>These are quick health indicators but say less than the per-case shapes above. A drop in cross-backend agreement is the most useful trend to monitor over time — it tracks whether the two implementations are converging or diverging.</p>
+
+  </div>
+
+</article>
+
+      </div>
+    </main><footer class="site-footer h-card">
+  <data class="u-url" href="/icd11-postcoord-conformance/"></data>
+
+  <div class="wrapper">
+
+    <h2 class="footer-heading">ICD-11 Postcoordination Conformance Suite</h2>
+
+    <div class="footer-col-wrapper">
+      <div class="footer-col footer-col-1">
+        <ul class="contact-list">
+          <li class="p-name">ICD-11 Postcoordination Conformance Suite</li></ul>
+      </div>
+
+      <div class="footer-col footer-col-2"><ul class="social-media-list"></ul>
+</div>
+
+      <div class="footer-col footer-col-3">
+        <p>A Postman/Newman-driven test suite comparing FHIR terminology servers&#39; handling of ICD-11 postcoordinated cluster expressions, keyed to the WHO Reference Guide §2.9-§2.11.</p>
+      </div>
+    </div>
+
+  </div>
+
+</footer>
+</body>
+
+</html>
