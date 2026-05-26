@@ -1,8 +1,12 @@
-# Build and deploy the docs/ Jekyll site to GitHub Pages via the official
-# Pages actions. Switched from the legacy Pages build path because the latter
-# fails with an opaque "Page build failed" message and no surfaced logs.
-# This workflow runs Jekyll explicitly so build failures land in the Actions
-# tab with full stack traces.
+# Build the docs/ Jekyll site and deploy it to GitHub Pages.
+#
+# The aehrc org Actions allowlist blocks Marketplace actions including the
+# official Pages chain (actions/configure-pages, actions/deploy-pages) and
+# ruby/setup-ruby. This workflow avoids all of them — it only uses
+# actions/checkout (first-party) and runs everything else as shell steps.
+# Pages output is force-pushed to the `gh-pages` branch with a .nojekyll
+# marker so the legacy Pages build serves the pre-built static HTML
+# verbatim, bypassing the broken legacy Jekyll build path entirely.
 
 name: pages
 
@@ -15,36 +19,29 @@ on:
   workflow_dispatch:
 
 permissions:
-  contents: read
-  pages: write
-  id-token: write
+  contents: write
 
-# Allow only one concurrent deployment.
 concurrency:
   group: pages
   cancel-in-progress: false
 
 jobs:
-  build:
+  build-and-deploy:
     runs-on: ubuntu-latest
     steps:
       - name: Checkout
         uses: actions/checkout@v4
-
-      - name: Setup Pages
-        id: pages
-        uses: actions/configure-pages@v5
+        with:
+          # Need credentials configured to push the build output back to the
+          # gh-pages branch. The GITHUB_TOKEN automatically provisioned by
+          # Actions has `contents: write` from the permissions block above.
+          persist-credentials: true
 
       - name: Install Jekyll
-        # Use the runner's pre-installed Ruby — the aehrc org policy may
-        # restrict third-party actions like ruby/setup-ruby@v1, so we avoid
-        # that and rely on `ubuntu-latest` shipping a usable Ruby.
         run: |
           ruby --version
           gem install --user-install bundler jekyll
           echo "$(ruby -r rubygems -e 'puts Gem.user_dir')/bin" >> "$GITHUB_PATH"
-          # Inline Gemfile keeps the repo lean — the conformance suite itself
-          # has no Ruby dependency outside the Pages build.
           cat > Gemfile <<'EOF'
           source "https://rubygems.org"
           gem "jekyll", "~> 4.3"
@@ -58,22 +55,24 @@ jobs:
           bundle exec jekyll build \
             --source docs \
             --destination _site \
-            --baseurl "${{ steps.pages.outputs.base_path }}"
+            --baseurl "/icd11-postcoord-conformance"
         env:
           JEKYLL_ENV: production
 
-      - name: Upload artifact
-        uses: actions/upload-pages-artifact@v3
-        with:
-          path: ./_site
+      - name: Deploy to gh-pages branch
+        run: |
+          # .nojekyll tells legacy Pages to serve the files as-is without
+          # running its own Jekyll pass — we've already built the site.
+          touch _site/.nojekyll
 
-  deploy:
-    needs: build
-    runs-on: ubuntu-latest
-    environment:
-      name: github-pages
-      url: ${{ steps.deployment.outputs.page_url }}
-    steps:
-      - name: Deploy to GitHub Pages
-        id: deployment
-        uses: actions/deploy-pages@v4
+          cd _site
+          git init -q -b gh-pages
+          git config user.name  'github-actions[bot]'
+          git config user.email 'github-actions[bot]@users.noreply.github.com'
+          git add .
+          git commit -q -m "Pages build from ${GITHUB_SHA::7}"
+          git push -qf \
+            "https://x-access-token:${GITHUB_TOKEN}@github.com/${GITHUB_REPOSITORY}.git" \
+            gh-pages
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
