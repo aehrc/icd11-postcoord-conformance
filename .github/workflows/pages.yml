@@ -38,10 +38,15 @@ jobs:
           persist-credentials: true
 
       - name: Install Jekyll
+        # CONSTRAINT: `$GITHUB_PATH` only propagates to subsequent steps, so we
+        # also `export PATH` in this step to make the freshly-installed
+        # `bundle` command resolvable below.
         run: |
           ruby --version
           gem install --user-install bundler jekyll
-          echo "$(ruby -r rubygems -e 'puts Gem.user_dir')/bin" >> "$GITHUB_PATH"
+          GEM_BIN="$(ruby -r rubygems -e 'puts Gem.user_dir')/bin"
+          echo "$GEM_BIN" >> "$GITHUB_PATH"
+          export PATH="$GEM_BIN:$PATH"
           cat > Gemfile <<'EOF'
           source "https://rubygems.org"
           gem "jekyll", "~> 4.3"
