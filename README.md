@@ -113,4 +113,6 @@ The nightly workflow at `.github/workflows/nightly-conformance.yml` is **disable
 
 ## License
 
-TODO: pick a license appropriate for AEHRC public release. Suggest Apache-2.0 to match the broader Ontoserver ecosystem unless there's a reason to diverge.
+Apache License, Version 2.0. See [LICENSE](LICENSE).
+
+Copyright Commonwealth Scientific and Industrial Research Organisation (CSIRO) — Australian e-Health Research Centre (AEHRC).
