@@ -1,0 +1,747 @@
+<!doctype html>
+<html lang="en"><head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>ICD-11 Postcoord Conformance Report</title>
+<style>
+body {
+  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+  margin: 0 auto;
+  max-width: 1100px;
+  padding: 2rem 1.5rem 4rem;
+  color: #222;
+  line-height: 1.45;
+}
+h1 { margin-bottom: 0.2rem; }
+h2 { margin-top: 2rem; border-bottom: 1px solid #ddd; padding-bottom: 0.3rem; }
+.meta { color: #666; font-size: 0.9rem; margin-bottom: 1.5rem; }
+.breadcrumb { font-size: 0.9rem; margin-bottom: 1rem; }
+.breadcrumb a { color: #0366d6; text-decoration: none; }
+.breadcrumb a:hover { text-decoration: underline; }
+.summary { background: #f6f8fa; padding: 1rem 1.2rem; border-radius: 6px; margin-bottom: 2rem; }
+.summary strong { font-variant-numeric: tabular-nums; }
+table { width: 100%; border-collapse: collapse; font-size: 0.9rem; margin-bottom: 1rem; }
+th, td { text-align: left; padding: 0.4rem 0.6rem; border-bottom: 1px solid #eee; vertical-align: top; }
+th { background: #fafbfc; font-weight: 600; }
+code { background: #f4f4f4; padding: 0.05rem 0.3rem; border-radius: 3px; font-family: ui-monospace, "SF Mono", Menlo, Consolas, monospace; font-size: 0.85rem; }
+.bool-true { color: #1a7f37; font-weight: 600; }
+.bool-false { color: #cf222e; font-weight: 600; }
+.bool-null { color: #999; }
+.agree-true { background: #e6f4ea; }
+.agree-false { background: #fdecea; }
+.id { white-space: nowrap; font-family: ui-monospace, monospace; }
+.category-meta { color: #666; font-size: 0.85rem; margin-bottom: 0.7rem; }
+</style>
+</head><body>
+<div class="breadcrumb"><a href="../index.html">&laquo; ICD-11 Postcoord Conformance Suite</a></div>
+<h1>ICD-11 Postcoordination Conformance Report</h1>
+<div class="meta">Generated 2026-06-01 09:28 UTC &middot; 63 cases</div>
+<div class="summary">
+<strong>37 / 63</strong> cross-backend agreement &middot; <strong>33 / 63</strong> candidate matches suite &middot; <strong>45 / 63</strong> ICD-API matches suite.
+</div>
+<h2>Category A</h2>
+<div class="category-meta">Slug: <code>precoordinated</code></div>
+<table>
+<thead><tr><th>id</th><th>expression</th><th>expected</th><th>candidate</th><th>icdapi</th><th>agree</th><th>refguide</th><th>rationale</th></tr></thead><tbody>
+<tr class="agree-false">
+<td class="id">A.1</td>
+<td><code>BA41.0</code></td>
+<td><span class="bool-true">true</span></td>
+<td><span class="bool-false">false</span></td>
+<td><span class="bool-true">true</span></td>
+<td><span class="bool-false">false</span></td>
+<td>§2.10.2 rule 1</td>
+<td>Bare precoordinated stem; no clustering needed</td>
+</tr>
+<tr class="agree-false">
+<td class="id">A.2</td>
+<td><code>2C25.2</code></td>
+<td><span class="bool-true">true</span></td>
+<td><span class="bool-false">false</span></td>
+<td><span class="bool-true">true</span></td>
+<td><span class="bool-false">false</span></td>
+<td>§2.10</td>
+<td>Bare precoordinated stem combining site and pathology</td>
+</tr>
+</tbody></table>
+<h2>Category B</h2>
+<div class="category-meta">Slug: <code>single-group-extensions</code></div>
+<table>
+<thead><tr><th>id</th><th>expression</th><th>expected</th><th>candidate</th><th>icdapi</th><th>agree</th><th>refguide</th><th>rationale</th></tr></thead><tbody>
+<tr class="agree-false">
+<td class="id">B.1</td>
+<td><code>BA41.0&amp;XA7RE3</code></td>
+<td><span class="bool-true">true</span></td>
+<td><span class="bool-false">false</span></td>
+<td><span class="bool-true">true</span></td>
+<td><span class="bool-false">false</span></td>
+<td>§2.10.2 Ex 1 (simplified)</td>
+<td>Single anatomy extension on axis-bearing stem</td>
+</tr>
+<tr class="agree-false">
+<td class="id">B.2</td>
+<td><code>BA41.0&amp;XA7RE3&amp;XA7NQ7</code></td>
+<td><span class="bool-true">true</span></td>
+<td><span class="bool-false">false</span></td>
+<td><span class="bool-true">true</span></td>
+<td><span class="bool-false">false</span></td>
+<td>§2.10.2 Ex 1</td>
+<td>Multiple anatomy extensions on same stem (AllowAlways)</td>
+</tr>
+<tr class="agree-false">
+<td class="id">B.3</td>
+<td><code>GB51&amp;XK8G&amp;XN6P4</code></td>
+<td><span class="bool-true">true</span></td>
+<td><span class="bool-false">false</span></td>
+<td><span class="bool-true">true</span></td>
+<td><span class="bool-false">false</span></td>
+<td>§2.10.2 Ex 2</td>
+<td>Stem with laterality and infectious agent extensions</td>
+</tr>
+<tr class="agree-true">
+<td class="id">B.4</td>
+<td><code>BA41&amp;XY0Y</code></td>
+<td><span class="bool-true">true</span></td>
+<td><span class="bool-false">false</span></td>
+<td><span class="bool-false">false</span></td>
+<td><span class="bool-true">true</span></td>
+<td>§2.10.3 Ex 1</td>
+<td>Stem with Type-2 discharge diagnosis type extension</td>
+</tr>
+<tr class="agree-true">
+<td class="id">B.5</td>
+<td><code>5A10&amp;XY6M</code></td>
+<td><span class="bool-true">true</span></td>
+<td><span class="bool-false">false</span></td>
+<td><span class="bool-false">false</span></td>
+<td><span class="bool-true">true</span></td>
+<td>§2.10.3 Ex 1</td>
+<td>Stem with Type-2 diagnosis timing (Present on admission)</td>
+</tr>
+<tr class="agree-true">
+<td class="id">B.6</td>
+<td><code>BD71.4&amp;XK9K&amp;XY69</code></td>
+<td><span class="bool-true">true</span></td>
+<td><span class="bool-false">false</span></td>
+<td><span class="bool-false">false</span></td>
+<td><span class="bool-true">true</span></td>
+<td>§2.10.3 Ex 2</td>
+<td>Stem with laterality and Type-2 timing (Developed after admission)</td>
+</tr>
+</tbody></table>
+<h2>Category C</h2>
+<div class="category-meta">Slug: <code>multi-stem</code></div>
+<table>
+<thead><tr><th>id</th><th>expression</th><th>expected</th><th>candidate</th><th>icdapi</th><th>agree</th><th>refguide</th><th>rationale</th></tr></thead><tbody>
+<tr class="agree-false">
+<td class="id">C.1</td>
+<td><code>5A11/5A23</code></td>
+<td><span class="bool-true">true</span></td>
+<td><span class="bool-false">false</span></td>
+<td><span class="bool-true">true</span></td>
+<td><span class="bool-false">false</span></td>
+<td>§2.10.2 Ex 3</td>
+<td>Mortality UCOD order: diabetes / diabetic coma</td>
+</tr>
+<tr class="agree-false">
+<td class="id">C.2</td>
+<td><code>5A23/5A11</code></td>
+<td><span class="bool-true">true</span></td>
+<td><span class="bool-false">false</span></td>
+<td><span class="bool-true">true</span></td>
+<td><span class="bool-false">false</span></td>
+<td>§2.10.2 Ex 4</td>
+<td>Morbidity main order: diabetic coma / diabetes (same codes, reversed)</td>
+</tr>
+<tr class="agree-false">
+<td class="id">C.3</td>
+<td><code>GC08.0/MG50.27</code></td>
+<td><span class="bool-true">true</span></td>
+<td><span class="bool-false">false</span></td>
+<td><span class="bool-true">true</span></td>
+<td><span class="bool-false">false</span></td>
+<td>§2.10</td>
+<td>UTI associated with E. coli antimicrobial resistance</td>
+</tr>
+<tr class="agree-false">
+<td class="id">C.4</td>
+<td><code>DA63.Z/ME24.90</code></td>
+<td><span class="bool-true">true</span></td>
+<td><span class="bool-false">false</span></td>
+<td><span class="bool-true">true</span></td>
+<td><span class="bool-false">false</span></td>
+<td>§2.10.1</td>
+<td>Duodenal ulcer with manifestation: acute GI bleeding</td>
+</tr>
+</tbody></table>
+<h2>Category D</h2>
+<div class="category-meta">Slug: <code>complex-cluster</code></div>
+<table>
+<thead><tr><th>id</th><th>expression</th><th>expected</th><th>candidate</th><th>icdapi</th><th>agree</th><th>refguide</th><th>rationale</th></tr></thead><tbody>
+<tr class="agree-false">
+<td class="id">D.1</td>
+<td><code>DD51&amp;XK8G/ME24.2&amp;XT5R</code></td>
+<td><span class="bool-true">true</span></td>
+<td><span class="bool-false">false</span></td>
+<td><span class="bool-true">true</span></td>
+<td><span class="bool-false">false</span></td>
+<td>§2.10.2 Ex 5</td>
+<td>Stem &amp; ext / stem &amp; ext: left inguinal hernia with acute obstruction</td>
+</tr>
+</tbody></table>
+<h2>Category E</h2>
+<div class="category-meta">Slug: <code>parser-reject</code></div>
+<table>
+<thead><tr><th>id</th><th>expression</th><th>expected</th><th>candidate</th><th>icdapi</th><th>agree</th><th>refguide</th><th>rationale</th></tr></thead><tbody>
+<tr class="agree-true">
+<td class="id">E.1</td>
+<td><code>BA41.0/</code></td>
+<td><span class="bool-false">false</span></td>
+<td><span class="bool-false">false</span></td>
+<td><span class="bool-false">false</span></td>
+<td><span class="bool-true">true</span></td>
+<td>cluster grammar</td>
+<td>Trailing group separator</td>
+</tr>
+<tr class="agree-true">
+<td class="id">E.2</td>
+<td><code>/BA41.0</code></td>
+<td><span class="bool-false">false</span></td>
+<td><span class="bool-false">false</span></td>
+<td><span class="bool-false">false</span></td>
+<td><span class="bool-true">true</span></td>
+<td>cluster grammar</td>
+<td>Leading group separator (empty first group)</td>
+</tr>
+<tr class="agree-true">
+<td class="id">E.3</td>
+<td><code>BA41.0//ME24.2</code></td>
+<td><span class="bool-false">false</span></td>
+<td><span class="bool-false">false</span></td>
+<td><span class="bool-false">false</span></td>
+<td><span class="bool-true">true</span></td>
+<td>cluster grammar</td>
+<td>Doubled group separator (empty middle group)</td>
+</tr>
+<tr class="agree-true">
+<td class="id">E.4</td>
+<td><code>BA41.0&amp;</code></td>
+<td><span class="bool-false">false</span></td>
+<td><span class="bool-false">false</span></td>
+<td><span class="bool-false">false</span></td>
+<td><span class="bool-true">true</span></td>
+<td>cluster grammar</td>
+<td>Trailing extension separator</td>
+</tr>
+<tr class="agree-true">
+<td class="id">E.5</td>
+<td><code>&amp;XA7RE3</code></td>
+<td><span class="bool-false">false</span></td>
+<td><span class="bool-false">false</span></td>
+<td><span class="bool-false">false</span></td>
+<td><span class="bool-true">true</span></td>
+<td>cluster grammar</td>
+<td>Leading extension separator (no stem)</td>
+</tr>
+<tr class="agree-true">
+<td class="id">E.6</td>
+<td><code>BA41.0&amp;&amp;XA7RE3</code></td>
+<td><span class="bool-false">false</span></td>
+<td><span class="bool-false">false</span></td>
+<td><span class="bool-false">false</span></td>
+<td><span class="bool-true">true</span></td>
+<td>cluster grammar</td>
+<td>Doubled extension separator</td>
+</tr>
+<tr class="agree-true">
+<td class="id">E.7</td>
+<td><code>XA7RE3&amp;BA41.0</code></td>
+<td><span class="bool-false">false</span></td>
+<td><span class="bool-false">false</span></td>
+<td><span class="bool-false">false</span></td>
+<td><span class="bool-true">true</span></td>
+<td>§2.9 (extensions never in first position)</td>
+<td>Extension code first in cluster</td>
+</tr>
+<tr class="agree-false">
+<td class="id">E.8</td>
+<td><code>XA7RE3</code></td>
+<td><span class="bool-false">false</span></td>
+<td><span class="bool-false">false</span></td>
+<td><span class="bool-true">true</span></td>
+<td><span class="bool-false">false</span></td>
+<td>§2.9 (extensions never used alone)</td>
+<td>Bare extension code (no stem)</td>
+</tr>
+<tr class="agree-true">
+<td class="id">E.9</td>
+<td><code></code></td>
+<td><span class="bool-false">false</span></td>
+<td><span class="bool-false">false</span></td>
+<td><span class="bool-false">false</span></td>
+<td><span class="bool-true">true</span></td>
+<td>cluster grammar</td>
+<td>Empty expression</td>
+</tr>
+<tr class="agree-true">
+<td class="id">E.10</td>
+<td><code>/</code></td>
+<td><span class="bool-false">false</span></td>
+<td><span class="bool-false">false</span></td>
+<td><span class="bool-false">false</span></td>
+<td><span class="bool-true">true</span></td>
+<td>cluster grammar</td>
+<td>Just the group separator</td>
+</tr>
+<tr class="agree-true">
+<td class="id">E.11</td>
+<td><code>BA41.0&amp;5A11</code></td>
+<td><span class="bool-false">false</span></td>
+<td><span class="bool-false">false</span></td>
+<td><span class="bool-false">false</span></td>
+<td><span class="bool-true">true</span></td>
+<td>§2.10.2 rules 3-5 / §2.9</td>
+<td>Stem code (5A11) in extension position - extensions must start with X; multiple stems must be joined by &#x27;/&#x27; not &#x27;&amp;&#x27;</td>
+</tr>
+<tr class="agree-true">
+<td class="id">E.12</td>
+<td><code>BA41.0&amp;XA7RE3&amp;5A11</code></td>
+<td><span class="bool-false">false</span></td>
+<td><span class="bool-false">false</span></td>
+<td><span class="bool-false">false</span></td>
+<td><span class="bool-true">true</span></td>
+<td>§2.10.2 rule 5</td>
+<td>Stem code (5A11) appended after a valid extension - last token is a stem in extension position</td>
+</tr>
+</tbody></table>
+<h2>Category F</h2>
+<div class="category-meta">Slug: <code>unknown-code</code></div>
+<table>
+<thead><tr><th>id</th><th>expression</th><th>expected</th><th>candidate</th><th>icdapi</th><th>agree</th><th>refguide</th><th>rationale</th></tr></thead><tbody>
+<tr class="agree-true">
+<td class="id">F.1</td>
+<td><code>BA41.0&amp;XNOTREAL</code></td>
+<td><span class="bool-false">false</span></td>
+<td><span class="bool-false">false</span></td>
+<td><span class="bool-false">false</span></td>
+<td><span class="bool-true">true</span></td>
+<td>existence</td>
+<td>Known stem with unknown extension code</td>
+</tr>
+<tr class="agree-true">
+<td class="id">F.2</td>
+<td><code>ZZZZZZ&amp;XA7RE3</code></td>
+<td><span class="bool-false">false</span></td>
+<td><span class="bool-false">false</span></td>
+<td><span class="bool-false">false</span></td>
+<td><span class="bool-true">true</span></td>
+<td>existence</td>
+<td>Unknown stem with known extension</td>
+</tr>
+<tr class="agree-true">
+<td class="id">F.3</td>
+<td><code>ZZZZZZ</code></td>
+<td><span class="bool-false">false</span></td>
+<td><span class="bool-false">false</span></td>
+<td><span class="bool-false">false</span></td>
+<td><span class="bool-true">true</span></td>
+<td>existence</td>
+<td>Entirely unknown code</td>
+</tr>
+</tbody></table>
+<h2>Category G</h2>
+<div class="category-meta">Slug: <code>axis-membership</code></div>
+<table>
+<thead><tr><th>id</th><th>expression</th><th>expected</th><th>candidate</th><th>icdapi</th><th>agree</th><th>refguide</th><th>rationale</th></tr></thead><tbody>
+<tr class="agree-true">
+<td class="id">G.1</td>
+<td><code>BA41.0&amp;XK8G</code></td>
+<td><span class="bool-false">false</span></td>
+<td><span class="bool-false">false</span></td>
+<td><span class="bool-false">false</span></td>
+<td><span class="bool-true">true</span></td>
+<td>§2.10 axis-VS membership</td>
+<td>Laterality extension on stem with no laterality axis</td>
+</tr>
+<tr class="agree-true">
+<td class="id">G.2</td>
+<td><code>BA41.0&amp;XJ7YM</code></td>
+<td><span class="bool-false">false</span></td>
+<td><span class="bool-false">false</span></td>
+<td><span class="bool-false">false</span></td>
+<td><span class="bool-true">true</span></td>
+<td>§2.10 axis-VS membership</td>
+<td>Fracture-open-or-closed extension on a non-fracture stem</td>
+</tr>
+<tr class="agree-true">
+<td class="id">G.3</td>
+<td><code>DD51&amp;XA7RE3</code></td>
+<td><span class="bool-false">false</span></td>
+<td><span class="bool-false">false</span></td>
+<td><span class="bool-false">false</span></td>
+<td><span class="bool-true">true</span></td>
+<td>§2.10 axis-VS membership</td>
+<td>Heart anatomy extension on inguinal hernia stem</td>
+</tr>
+<tr class="agree-true">
+<td class="id">G.4</td>
+<td><code>GB51&amp;XA7RE3</code></td>
+<td><span class="bool-false">false</span></td>
+<td><span class="bool-false">false</span></td>
+<td><span class="bool-false">false</span></td>
+<td><span class="bool-true">true</span></td>
+<td>§2.10 axis-VS membership</td>
+<td>Heart anatomy extension on acute pyelonephritis stem</td>
+</tr>
+</tbody></table>
+<h2>Category H</h2>
+<div class="category-meta">Slug: <code>policy-replicate</code></div>
+<table>
+<thead><tr><th>id</th><th>expression</th><th>expected</th><th>candidate</th><th>icdapi</th><th>agree</th><th>refguide</th><th>rationale</th></tr></thead><tbody>
+<tr class="agree-true">
+<td class="id">H.1</td>
+<td><code>CA41.Z&amp;XN275</code></td>
+<td><span class="bool-false">false</span></td>
+<td><span class="bool-false">false</span></td>
+<td><span class="bool-false">false</span></td>
+<td><span class="bool-true">true</span></td>
+<td>§2.10.1 explicit prohibition</td>
+<td>Postcoord replicates precoordinated CA41.0 (Acute RSV bronchiolitis)</td>
+</tr>
+<tr class="agree-false">
+<td class="id">H.2</td>
+<td><code>NC32.Z&amp;XA8U33</code></td>
+<td><span class="bool-false">false</span></td>
+<td><span class="bool-false">false</span></td>
+<td><span class="bool-true">true</span></td>
+<td><span class="bool-false">false</span></td>
+<td>§2.10.1 explicit prohibition</td>
+<td>Postcoord replicates precoordinated NC32.2 (Fracture of shaft of ulna)</td>
+</tr>
+</tbody></table>
+<h2>Category I</h2>
+<div class="category-meta">Slug: <code>type2-universal</code></div>
+<table>
+<thead><tr><th>id</th><th>expression</th><th>expected</th><th>candidate</th><th>icdapi</th><th>agree</th><th>refguide</th><th>rationale</th></tr></thead><tbody>
+<tr class="agree-true">
+<td class="id">I.1</td>
+<td><code>BA41.0&amp;XY0Y</code></td>
+<td><span class="bool-true">true</span></td>
+<td><span class="bool-false">false</span></td>
+<td><span class="bool-false">false</span></td>
+<td><span class="bool-true">true</span></td>
+<td>§2.9 Type-2 universal</td>
+<td>Discharge type (main condition) on a stem - Type-2 universal</td>
+</tr>
+<tr class="agree-true">
+<td class="id">I.2</td>
+<td><code>BA41.0&amp;XY6M</code></td>
+<td><span class="bool-true">true</span></td>
+<td><span class="bool-false">false</span></td>
+<td><span class="bool-false">false</span></td>
+<td><span class="bool-true">true</span></td>
+<td>§2.9 Type-2 universal</td>
+<td>Diagnosis timing (Present on admission) on a stem - Type-2 universal</td>
+</tr>
+<tr class="agree-true">
+<td class="id">I.3</td>
+<td><code>BA41.0&amp;XY69</code></td>
+<td><span class="bool-true">true</span></td>
+<td><span class="bool-false">false</span></td>
+<td><span class="bool-false">false</span></td>
+<td><span class="bool-true">true</span></td>
+<td>§2.9 Type-2 universal</td>
+<td>Diagnosis timing (Developed after admission) on a stem - Type-2 universal</td>
+</tr>
+<tr class="agree-true">
+<td class="id">I.4</td>
+<td><code>BA41.0&amp;XY85</code></td>
+<td><span class="bool-true">true</span></td>
+<td><span class="bool-false">false</span></td>
+<td><span class="bool-false">false</span></td>
+<td><span class="bool-true">true</span></td>
+<td>§2.9 Type-2 universal</td>
+<td>Diagnosis timing (Uncertain) on a stem - Type-2 universal</td>
+</tr>
+</tbody></table>
+<h2>Category J</h2>
+<div class="category-meta">Slug: <code>required-axis-missing</code></div>
+<table>
+<thead><tr><th>id</th><th>expression</th><th>expected</th><th>candidate</th><th>icdapi</th><th>agree</th><th>refguide</th><th>rationale</th></tr></thead><tbody>
+<tr class="agree-false">
+<td class="id">J.1</td>
+<td><code>CB41</code></td>
+<td><span class="bool-false">false</span></td>
+<td><span class="bool-false">false</span></td>
+<td><span class="bool-true">true</span></td>
+<td><span class="bool-false">false</span></td>
+<td>§2.10 mandatory postcoord</td>
+<td>Respiratory failure - required Has-causing-condition axis missing makes code abstract</td>
+</tr>
+<tr class="agree-false">
+<td class="id">J.2</td>
+<td><code>CB41/1D00</code></td>
+<td><span class="bool-true">true</span></td>
+<td><span class="bool-false">false</span></td>
+<td><span class="bool-true">true</span></td>
+<td><span class="bool-false">false</span></td>
+<td>§2.10 mandatory postcoord</td>
+<td>Respiratory failure with infectious encephalitis as causing condition (multi-stem fulfilment)</td>
+</tr>
+</tbody></table>
+<h2>Category K</h2>
+<div class="category-meta">Slug: <code>allow-multiple-values</code></div>
+<table>
+<thead><tr><th>id</th><th>expression</th><th>expected</th><th>candidate</th><th>icdapi</th><th>agree</th><th>refguide</th><th>rationale</th></tr></thead><tbody>
+<tr class="agree-false">
+<td class="id">K.1</td>
+<td><code>GB51&amp;XK8G&amp;XK9K</code></td>
+<td><span class="bool-false">false</span></td>
+<td><span class="bool-false">false</span></td>
+<td><span class="bool-true">true</span></td>
+<td><span class="bool-false">false</span></td>
+<td>§2.10 axis policy</td>
+<td>Two laterality values (Left AND Right) on same axis - violates AllowMultipleValues for laterality</td>
+</tr>
+<tr class="agree-true">
+<td class="id">K.2</td>
+<td><code>5A11&amp;XY0Y&amp;XY6M</code></td>
+<td><span class="bool-false">false</span></td>
+<td><span class="bool-false">false</span></td>
+<td><span class="bool-false">false</span></td>
+<td><span class="bool-true">true</span></td>
+<td>§2.9 Type-2 semantics</td>
+<td>Two Type-2 diagnosis descriptors (discharge type AND timing) - Type-2 axes typically NotAllowed multi</td>
+</tr>
+<tr class="agree-false">
+<td class="id">K.3</td>
+<td><code>BD71.4&amp;XK8G&amp;XK9K</code></td>
+<td><span class="bool-false">false</span></td>
+<td><span class="bool-false">false</span></td>
+<td><span class="bool-true">true</span></td>
+<td><span class="bool-false">false</span></td>
+<td>§2.10 axis policy</td>
+<td>Two laterality values on a different stem - reproduces K.1 pattern on another concept</td>
+</tr>
+</tbody></table>
+<h2>Category L</h2>
+<div class="category-meta">Slug: <code>ordering</code></div>
+<table>
+<thead><tr><th>id</th><th>expression</th><th>expected</th><th>candidate</th><th>icdapi</th><th>agree</th><th>refguide</th><th>rationale</th></tr></thead><tbody>
+<tr class="agree-false">
+<td class="id">L.1</td>
+<td><code>5A11/5A23</code></td>
+<td><span class="bool-true">true</span></td>
+<td><span class="bool-false">false</span></td>
+<td><span class="bool-true">true</span></td>
+<td><span class="bool-false">false</span></td>
+<td>§2.10.2 Ex 3</td>
+<td>Same as C.1; documents mortality-cluster order (UCOD first)</td>
+</tr>
+<tr class="agree-false">
+<td class="id">L.2</td>
+<td><code>5A23/5A11</code></td>
+<td><span class="bool-true">true</span></td>
+<td><span class="bool-false">false</span></td>
+<td><span class="bool-true">true</span></td>
+<td><span class="bool-false">false</span></td>
+<td>§2.10.2 Ex 4</td>
+<td>Same as C.2; documents morbidity-cluster order (main condition first) - reversed from L.1 but equally valid</td>
+</tr>
+</tbody></table>
+<h2>Category M</h2>
+<div class="category-meta">Slug: <code>icf-bare</code></div>
+<table>
+<thead><tr><th>id</th><th>expression</th><th>expected</th><th>candidate</th><th>icdapi</th><th>agree</th><th>refguide</th><th>rationale</th></tr></thead><tbody>
+<tr class="agree-false">
+<td class="id">M.1</td>
+<td><code>b110</code></td>
+<td><span class="bool-true">true</span></td>
+<td><span class="bool-false">false</span></td>
+<td><span class="bool-true">true</span></td>
+<td><span class="bool-false">false</span></td>
+<td>§2.11 / refguide functioning</td>
+<td>Bare ICF body-function code (Consciousness functions)</td>
+</tr>
+<tr class="agree-false">
+<td class="id">M.2</td>
+<td><code>d530</code></td>
+<td><span class="bool-true">true</span></td>
+<td><span class="bool-false">false</span></td>
+<td><span class="bool-true">true</span></td>
+<td><span class="bool-false">false</span></td>
+<td>§2.11</td>
+<td>Bare ICF activity code (Toileting)</td>
+</tr>
+<tr class="agree-false">
+<td class="id">M.3</td>
+<td><code>s410</code></td>
+<td><span class="bool-true">true</span></td>
+<td><span class="bool-false">false</span></td>
+<td><span class="bool-true">true</span></td>
+<td><span class="bool-false">false</span></td>
+<td>§2.11</td>
+<td>Bare ICF body-structure code (Cardiovascular system)</td>
+</tr>
+<tr class="agree-false">
+<td class="id">M.4</td>
+<td><code>e310</code></td>
+<td><span class="bool-true">true</span></td>
+<td><span class="bool-false">false</span></td>
+<td><span class="bool-true">true</span></td>
+<td><span class="bool-false">false</span></td>
+<td>§2.11</td>
+<td>Bare ICF environmental factor code (Immediate family)</td>
+</tr>
+<tr class="agree-false">
+<td class="id">M.5</td>
+<td><code>b1100</code></td>
+<td><span class="bool-true">true</span></td>
+<td><span class="bool-false">false</span></td>
+<td><span class="bool-true">true</span></td>
+<td><span class="bool-false">false</span></td>
+<td>§2.11</td>
+<td>Bare ICF 5-char granular code (State of consciousness)</td>
+</tr>
+<tr class="agree-true">
+<td class="id">M.6</td>
+<td><code>b110.3</code></td>
+<td><span class="bool-false">false</span></td>
+<td><span class="bool-false">false</span></td>
+<td><span class="bool-false">false</span></td>
+<td><span class="bool-true">true</span></td>
+<td>§2.11 note</td>
+<td>Classical ICF qualifier syntax (b110 with moderate impairment) - not encoded as a separate concept in the FHIR linearization</td>
+</tr>
+<tr class="agree-true">
+<td class="id">M.7</td>
+<td><code>b110.5</code></td>
+<td><span class="bool-false">false</span></td>
+<td><span class="bool-false">false</span></td>
+<td><span class="bool-false">false</span></td>
+<td><span class="bool-true">true</span></td>
+<td>§2.11 note</td>
+<td>Classical ICF qualifier with invalid qualifier value (5 is not a valid ICF qualifier)</td>
+</tr>
+<tr class="agree-true">
+<td class="id">M.8</td>
+<td><code>b110&amp;XA7RE3</code></td>
+<td><span class="bool-false">false</span></td>
+<td><span class="bool-false">false</span></td>
+<td><span class="bool-false">false</span></td>
+<td><span class="bool-true">true</span></td>
+<td>§2.10 (cluster syntax is ICD-11 MMS, not ICF)</td>
+<td>Attempted ICD-11 cluster syntax on ICF code with MMS extension - cross-linearization should not validate</td>
+</tr>
+<tr class="agree-true">
+<td class="id">M.9</td>
+<td><code>b999</code></td>
+<td><span class="bool-false">false</span></td>
+<td><span class="bool-false">false</span></td>
+<td><span class="bool-false">false</span></td>
+<td><span class="bool-true">true</span></td>
+<td>existence</td>
+<td>Unknown ICF code</td>
+</tr>
+<tr class="agree-true">
+<td class="id">M.10</td>
+<td><code>b110/d530</code></td>
+<td><span class="bool-false">false</span></td>
+<td><span class="bool-false">false</span></td>
+<td><span class="bool-false">false</span></td>
+<td><span class="bool-true">true</span></td>
+<td>§2.10 (clustering not defined for ICF)</td>
+<td>Multi-stem cluster of two ICF codes - ICF does not use ICD-11 cluster syntax</td>
+</tr>
+</tbody></table>
+<h2>Category N</h2>
+<div class="category-meta">Slug: <code>multi-value-allowed-axis</code></div>
+<table>
+<thead><tr><th>id</th><th>expression</th><th>expected</th><th>candidate</th><th>icdapi</th><th>agree</th><th>refguide</th><th>rationale</th></tr></thead><tbody>
+<tr class="agree-false">
+<td class="id">N.1</td>
+<td><code>4A20&amp;XT0S</code></td>
+<td><span class="bool-true">true</span></td>
+<td><span class="bool-false">false</span></td>
+<td><span class="bool-true">true</span></td>
+<td><span class="bool-false">false</span></td>
+<td>§2.10 AllowMultipleValues=NotAllowed</td>
+<td>NotAllowed axis (timeInLife on 4A20) with single value - sanity positive</td>
+</tr>
+<tr class="agree-false">
+<td class="id">N.2</td>
+<td><code>4A20&amp;XT0S&amp;XT4Z</code></td>
+<td><span class="bool-false">false</span></td>
+<td><span class="bool-false">false</span></td>
+<td><span class="bool-true">true</span></td>
+<td><span class="bool-false">false</span></td>
+<td>§2.10 AllowMultipleValues=NotAllowed</td>
+<td>NotAllowed axis (timeInLife on 4A20) with two values from same axis - violates policy</td>
+</tr>
+<tr class="agree-true">
+<td class="id">N.3</td>
+<td><code>PF2Y&amp;XE266&amp;XE9D</code></td>
+<td><span class="bool-true">true</span></td>
+<td><span class="bool-false">false</span></td>
+<td><span class="bool-false">false</span></td>
+<td><span class="bool-true">true</span></td>
+<td>§2.10 AllowMultipleValues=AllowedExceptFromSameBlock</td>
+<td>AllowedExceptFromSameBlock (placeOfOccurrence on PF2Y) with two values from different top-level blocks - permitted</td>
+</tr>
+<tr class="agree-false">
+<td class="id">N.4</td>
+<td><code>PF2Y&amp;XE9XY&amp;XE9P0</code></td>
+<td><span class="bool-false">false</span></td>
+<td><span class="bool-false">false</span></td>
+<td><span class="bool-true">true</span></td>
+<td><span class="bool-false">false</span></td>
+<td>§2.10 AllowMultipleValues=AllowedExceptFromSameBlock</td>
+<td>AllowedExceptFromSameBlock (placeOfOccurrence on PF2Y) with two values from same block (both descendants of XE266) - violates policy</td>
+</tr>
+</tbody></table>
+<h2>Category O</h2>
+<div class="category-meta">Slug: <code>axisless-stem-type1</code></div>
+<table>
+<thead><tr><th>id</th><th>expression</th><th>expected</th><th>candidate</th><th>icdapi</th><th>agree</th><th>refguide</th><th>rationale</th></tr></thead><tbody>
+<tr class="agree-true">
+<td class="id">O.1</td>
+<td><code>BA52&amp;XA7RE3</code></td>
+<td><span class="bool-false">false</span></td>
+<td><span class="bool-false">false</span></td>
+<td><span class="bool-false">false</span></td>
+<td><span class="bool-true">true</span></td>
+<td>§2.10.1</td>
+<td>Type-1 stem-specific extension (anatomy XA7RE3) applied to a stem (BA52) with no declared postcoordination axes - WHO 2.10.1 disallows</td>
+</tr>
+<tr class="agree-true">
+<td class="id">O.2</td>
+<td><code>BA52&amp;XY0Y</code></td>
+<td><span class="bool-true">true</span></td>
+<td><span class="bool-false">false</span></td>
+<td><span class="bool-false">false</span></td>
+<td><span class="bool-true">true</span></td>
+<td>§2.10.3</td>
+<td>Type-2 universal extension (XY0Y laterality-unspecified) applied to a stem (BA52) with no declared axes - WHO 2.10.3 admits universals against any stem</td>
+</tr>
+<tr class="agree-true">
+<td class="id">O.3</td>
+<td><code>BA52&amp;XY6M</code></td>
+<td><span class="bool-true">true</span></td>
+<td><span class="bool-false">false</span></td>
+<td><span class="bool-false">false</span></td>
+<td><span class="bool-true">true</span></td>
+<td>§2.10.3</td>
+<td>Type-2 universal extension (XY6M timing-unspecified) applied to an axisless stem - second universal sentinel for coverage</td>
+</tr>
+<tr class="agree-true">
+<td class="id">O.4</td>
+<td><code>BA52&amp;XY0Y&amp;XY6M</code></td>
+<td><span class="bool-true">true</span></td>
+<td><span class="bool-false">false</span></td>
+<td><span class="bool-false">false</span></td>
+<td><span class="bool-true">true</span></td>
+<td>§2.10.3</td>
+<td>Two Type-2 universal extensions stacked on an axisless stem - WHO 2.10.3 admits multiple universals; no Type-1 axis policy applies</td>
+</tr>
+</tbody></table>
+</body></html>
